@@ -16,6 +16,8 @@ namespace SubwatchApi.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            base.OnModelCreating(builder);
+
             // Subscription
             builder.Entity<Subscription>()
                 .HasIndex(s => new { s.UserId, s.NextBillingDate });

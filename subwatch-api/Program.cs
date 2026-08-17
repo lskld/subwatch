@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using SubwatchApi.Data;
+using SubwatchApi.Models.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,8 +15,11 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<SubwatchDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-    .AddEntityFrameworkStores<SubwatchDbContext>();
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+{
+    options.Stores.SchemaVersion = IdentitySchemaVersions.Version2;
+})
+.AddEntityFrameworkStores<SubwatchDbContext>();
 
 var app = builder.Build();
 

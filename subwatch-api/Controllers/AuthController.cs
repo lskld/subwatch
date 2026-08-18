@@ -35,6 +35,13 @@ namespace SubwatchApi.Controllers
         }
 
         [Authorize]
+        [HttpPost("logout")]
+        public IActionResult Logout()
+        {
+            return Ok(new { message = "Successfully logged out " });
+        }
+
+        [Authorize]
         [HttpGet("me")]
         public async Task<IActionResult> Me()
         {

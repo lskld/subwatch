@@ -13,7 +13,7 @@ namespace SubwatchApi.Services
             if (user is null)
                 return AuthResult.Failure(["Wrong login credentials"]);
 
-            var result = await signInManager.CheckPasswordSignInAsync(user, dto.Password, false);
+            var result = await signInManager.CheckPasswordSignInAsync(user, dto.Password, true);
 
             if (!result.Succeeded)
                 return AuthResult.Failure(["Wrong login credentials"]);

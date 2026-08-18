@@ -1,5 +1,9 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SubwatchApi.Models.DTOs;
+using SubwatchApi.Models.Entities;
 using SubwatchApi.Services;
 
 namespace SubwatchApi.Controllers 
@@ -28,6 +32,19 @@ namespace SubwatchApi.Controllers
                 return BadRequest(new { errors = result.Errors });
 
             return Ok(new { result.Token });
+        }
+
+        [Authorize]
+        [HttpGet("me")]
+        public async Task<IActionResult> Me()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await authService.GetCurrentUserAsync(userId!);
+
+            if (user is null)
+                return NotFound();
+
+            return Ok(new { user.Id, user.Email, user.UserName });
         }
     }
 }

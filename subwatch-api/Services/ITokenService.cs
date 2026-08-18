@@ -4,6 +4,6 @@ namespace SubwatchApi.Services
 {
     public interface ITokenService
     {
-        public string GenerateJwtToken(ApplicationUser user);
+        string GenerateJwtToken(ApplicationUser user);
     }
 }

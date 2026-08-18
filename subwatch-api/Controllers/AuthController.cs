@@ -1,26 +1,25 @@
 using Microsoft.AspNetCore.Mvc;
 using SubwatchApi.Models.DTOs;
+using SubwatchApi.Services;
 
 namespace SubwatchApi.Controllers 
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController : ControllerBase
+    public class AuthController(IAuthService authService) : ControllerBase
     {
-        private readonly IConfiguration _configuration;
-
-        public AuthController(IConfiguration configuration) => _configuration = configuration;
-
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto login)
         {
-            throw new NotImplementedException();
+            var token = await authService.LoginAsync(login);
+            return Ok(new { token });
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDto register)
         {
-            throw new NotImplementedException();
+            var token = await authService.RegisterAsync(register);
+            return Ok(new { token });
         }
     }
 }

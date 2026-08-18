@@ -34,5 +34,9 @@ namespace SubwatchApi.Services
 
             return AuthResult.Success(tokenService.GenerateJwtToken(user));
         }
+        public async Task<ApplicationUser?> GetCurrentUserAsync(string userId)
+        {
+            return await userManager.FindByIdAsync(userId);
+        }
     }
 }

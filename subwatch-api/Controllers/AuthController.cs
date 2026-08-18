@@ -19,7 +19,10 @@ namespace SubwatchApi.Controllers
         public async Task<IActionResult> Register(RegisterDto register)
         {
             var result = await authService.RegisterAsync(register);
-            var token = result.Token;
+
+            if (!result.Succeeded)
+                return BadRequest(new { errors = result.Errors });
+
             return Ok(new { result.Token });
         }
     }

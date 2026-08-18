@@ -9,19 +9,16 @@ namespace SubwatchApi.Controllers
     {
         private readonly IConfiguration _configuration;
 
-        public AuthController(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
+        public AuthController(IConfiguration configuration) => _configuration = configuration;
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginDto login)
+        public async Task<IActionResult> Login(LoginDto login)
         {
             throw new NotImplementedException();
         }
 
         [HttpPost("register")]
-        public IActionResult Register([FromBody] RegisterDto register)
+        public async Task<IActionResult> Register(RegisterDto register)
         {
             throw new NotImplementedException();
         }

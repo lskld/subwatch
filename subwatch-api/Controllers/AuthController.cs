@@ -12,6 +12,10 @@ namespace SubwatchApi.Controllers
         public async Task<IActionResult> Login(LoginDto login)
         {
             var result = await authService.LoginAsync(login);
+
+            if (!result.Succeeded)
+                return BadRequest(new { errors = result.Errors });
+
             return Ok(new { result.Token });
         }
 

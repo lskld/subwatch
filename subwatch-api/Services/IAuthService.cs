@@ -4,7 +4,7 @@ namespace SubwatchApi.Services
 {
     public interface IAuthService
     {
-        Task<string> LoginAsync(LoginDto dto);
-        Task<string> RegisterAsync(RegisterDto dto);
+        Task<AuthResult> LoginAsync(LoginDto dto);
+        Task<AuthResult> RegisterAsync(RegisterDto dto);
     }
 }

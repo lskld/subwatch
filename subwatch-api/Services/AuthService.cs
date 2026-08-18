@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 using SubwatchApi.Models.DTOs;
 using SubwatchApi.Models.Entities;
@@ -9,7 +8,17 @@ namespace SubwatchApi.Services
     {
         public async Task<AuthResult> LoginAsync(LoginDto dto)
         {
-            throw new NotImplementedException();
+            var user = await userManager.FindByEmailAsync(dto.Email);
+
+            if (user is null)
+                return AuthResult.Failure(["Wrong login credentials"]);
+
+            var result = await signInManager.CheckPasswordSignInAsync(user, dto.Password, false);
+
+            if (!result.Succeeded)
+                return AuthResult.Failure(["Wrong login credentials"]);
+
+            return AuthResult.Success(tokenService.GenerateJwtToken(user));
         }
         public async Task<AuthResult> RegisterAsync(RegisterDto dto)
         {

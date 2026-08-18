@@ -11,15 +11,16 @@ namespace SubwatchApi.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto login)
         {
-            var token = await authService.LoginAsync(login);
-            return Ok(new { token });
+            var result = await authService.LoginAsync(login);
+            return Ok(new { result.Token });
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDto register)
         {
-            var token = await authService.RegisterAsync(register);
-            return Ok(new { token });
+            var result = await authService.RegisterAsync(register);
+            var token = result.Token;
+            return Ok(new { result.Token });
         }
     }
 }

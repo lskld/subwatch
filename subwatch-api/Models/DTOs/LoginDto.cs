@@ -4,8 +4,8 @@ namespace SubwatchApi.Models.DTOs
 {
     public record LoginDto 
     (
-        [property: Required, EmailAddress] string Email,
-        [property: Required] string Password
+        [Required, EmailAddress] string Email,
+        [Required] string Password
     )
     {
         public override string ToString() => $"LoginDto {{ Email = {Email}}}";

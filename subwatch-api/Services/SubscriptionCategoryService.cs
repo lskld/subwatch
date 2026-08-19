@@ -16,13 +16,19 @@ namespace SubwatchApi.Services
 
             return new SubscriptionCategoryResponse(newCategory.Id, newCategory.Title, newCategory.Description);
         }
-
         public async Task<SubscriptionCategoryResponse?> GetByIdAsync(int id, string userId)
         {
             return await dbContext.SubscriptionCategories
                 .Where(c => c.Id == id && c.UserId == userId)
                 .Select(c => new SubscriptionCategoryResponse(c.Id, c.Title, c.Description))
                 .FirstOrDefaultAsync();
+        }
+        public async Task<List<SubscriptionCategoryResponse>> GetAllAsync(string userId)
+        {
+            return await dbContext.SubscriptionCategories
+                .Where(c => c.UserId == userId)
+                .Select(c => new SubscriptionCategoryResponse(c.Id, c.Title, c.Description))
+                .ToListAsync();
         }
     }
 }

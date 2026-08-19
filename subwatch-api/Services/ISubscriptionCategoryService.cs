@@ -4,6 +4,7 @@ namespace SubwatchApi.Services
 {
     public interface ISubscriptionCategoryService
     {
-        Task<CreateSubscriptionCategoryResponse> CreateAsync(CreateSubscriptionCategoryRequest req, string userId);
+        Task<SubscriptionCategoryResponse> CreateAsync(CreateSubscriptionCategoryRequest req, string userId);
+        Task<SubscriptionCategoryResponse?> GetByIdAsync(int id, string userId);
     }
 }

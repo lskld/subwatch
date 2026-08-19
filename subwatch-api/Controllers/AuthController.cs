@@ -13,7 +13,7 @@ namespace SubwatchApi.Controllers
     public class AuthController(IAuthService authService) : ControllerBase
     {
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginDto login)
+        public async Task<IActionResult> Login(LoginRequest login)
         {
             var result = await authService.LoginAsync(login);
 
@@ -24,7 +24,7 @@ namespace SubwatchApi.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(RegisterDto register)
+        public async Task<IActionResult> Register(RegisterRequest register)
         {
             var result = await authService.RegisterAsync(register);
 

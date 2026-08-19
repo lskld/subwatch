@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SubwatchApi.Models.DTOs
 {
-    public record RegisterDto
+    public record RegisterRequest
     (
         [Required] string Username,
         [Required, EmailAddress] string Email,

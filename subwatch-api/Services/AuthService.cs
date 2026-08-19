@@ -6,7 +6,7 @@ namespace SubwatchApi.Services
 {
     public class AuthService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ITokenService tokenService) : IAuthService
     {
-        public async Task<AuthResult> LoginAsync(LoginDto dto)
+        public async Task<AuthResult> LoginAsync(LoginRequest dto)
         {
             var user = await userManager.FindByEmailAsync(dto.Email);
 
@@ -20,7 +20,7 @@ namespace SubwatchApi.Services
 
             return AuthResult.Success(tokenService.GenerateJwtToken(user));
         }
-        public async Task<AuthResult> RegisterAsync(RegisterDto dto)
+        public async Task<AuthResult> RegisterAsync(RegisterRequest dto)
         {
             var user = new ApplicationUser
             {

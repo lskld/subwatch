@@ -5,27 +5,28 @@ using SubwatchApi.Services;
 
 namespace SubwatchApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class SubscriptionsController(ISubscriptionService subscriptionService) : ControllerBase
     {
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(CreateSubscriptionRequest req)
         {
-            throw new NotImplementedException();
+            var result = await subscriptionService.CreateAsync(req, User.GetUserId());
+            return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
         }
-        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            throw new NotImplementedException();
+            var subscription = await subscriptionService.GetByIdAsync(id, User.GetUserId());
+            return subscription is null ? NotFound() : Ok(subscription);
         }
-        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            throw new NotImplementedException();
+            var subscriptionList = await subscriptionService.GetAllAsync(User.GetUserId());
+            return Ok(subscriptionList);
         }
     }
 }

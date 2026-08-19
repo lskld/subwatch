@@ -7,5 +7,7 @@ namespace SubwatchApi.Services
         Task<SubscriptionResponse> CreateAsync(CreateSubscriptionRequest req, string userId);
         Task<SubscriptionResponse?> GetByIdAsync(int id, string userId);
         Task<List<SubscriptionResponse>> GetAllAsync(string userId);
+        Task<SubscriptionResponse?> UpdateAsync(int id, UpdateSubscriptionRequest req, string userId);
+        Task<bool> DeleteAsync(int id, string userId);
     }
 }

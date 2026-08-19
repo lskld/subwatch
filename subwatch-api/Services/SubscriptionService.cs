@@ -77,5 +77,52 @@ namespace SubwatchApi.Services
                     )
                 )).ToListAsync();
         }
+
+        public async Task<SubscriptionResponse?> UpdateAsync(int id, UpdateSubscriptionRequest req, string userId)
+        {
+            var subscription = await dbContext.Subscriptions
+                .FirstOrDefaultAsync(s => s.Id == id && s.UserId == userId);
+
+            if (subscription is null) return null;
+
+            var category = await dbContext.SubscriptionCategories
+                .FirstOrDefaultAsync(c => c.Id == req.SubscriptionCategoryId && c.UserId == userId)
+                ?? throw new UnauthorizedAccessException();
+
+            subscription.Title = req.Title;
+            subscription.Description = req.Description;
+            subscription.Price = req.Price;
+            subscription.BillingInterval = req.BillingInterval;
+            subscription.NextBillingDate = req.NextBillingDate;
+            subscription.SubscriptionCategoryId = req.SubscriptionCategoryId;
+
+            await dbContext.SaveChangesAsync();
+
+            return new SubscriptionResponse(
+                subscription.Id,
+                subscription.Title,
+                subscription.Description,
+                subscription.Price,
+                subscription.BillingInterval,
+                subscription.NextBillingDate,
+                new SubscriptionCategoryResponse(
+                    category.Id,
+                    category.Title,
+                    category.Description
+                )
+            );
+        }
+
+        public async Task<bool> DeleteAsync(int id, string userId)
+        {
+            var subscription = await dbContext.Subscriptions
+                .FirstOrDefaultAsync(s => s.Id == id && s.UserId == userId);
+
+            if (subscription is null) return false;
+
+            dbContext.Subscriptions.Remove(subscription);
+            await dbContext.SaveChangesAsync();
+            return true;
+        }
     }
 }

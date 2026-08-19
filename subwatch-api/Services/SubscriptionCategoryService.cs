@@ -30,5 +30,32 @@ namespace SubwatchApi.Services
                 .Select(c => new SubscriptionCategoryResponse(c.Id, c.Title, c.Description))
                 .ToListAsync();
         }
+
+        public async Task<SubscriptionCategoryResponse?> UpdateAsync(int id, UpdateSubscriptionCategoryRequest req, string userId)
+        {
+            var category = await dbContext.SubscriptionCategories
+                .FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId);
+
+            if (category is null) return null;
+
+            category.Title = req.Title;
+            category.Description = req.Description;
+
+            await dbContext.SaveChangesAsync();
+
+            return new SubscriptionCategoryResponse(category.Id, category.Title, category.Description);
+        }
+
+        public async Task<bool> DeleteAsync(int id, string userId)
+        {
+            var category = await dbContext.SubscriptionCategories
+                .FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId);
+
+            if (category is null) return false;
+
+            dbContext.SubscriptionCategories.Remove(category);
+            await dbContext.SaveChangesAsync();
+            return true;
+        }
     }
 }

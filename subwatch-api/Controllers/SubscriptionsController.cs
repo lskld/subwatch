@@ -28,5 +28,17 @@ namespace SubwatchApi.Controllers
             var subscriptionList = await subscriptionService.GetAllAsync(User.GetUserId());
             return Ok(subscriptionList);
         }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, UpdateSubscriptionRequest req)
+        {
+            var result = await subscriptionService.UpdateAsync(id, req, User.GetUserId());
+            return result is null ? NotFound() : Ok(result);
+        }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var deleted = await subscriptionService.DeleteAsync(id, User.GetUserId());
+            return deleted ? NoContent() : NotFound();
+        }
     }
 }

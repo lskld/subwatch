@@ -14,7 +14,7 @@ namespace SubwatchApi.Controllers
         public async Task<IActionResult> Create(CreateSubscriptionCategoryRequest req)
         {
             var result = await subscriptionCategoryService.CreateAsync(req, User.GetUserId());
-            return Created($"api/subscriptioncategories/{result.Id}", result);
+            return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
         }
         [Authorize]
         [HttpGet("{id}")]

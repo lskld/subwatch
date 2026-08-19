@@ -4,7 +4,11 @@ using SubwatchApi.Models.Entities;
 
 namespace SubwatchApi.Services
 {
-    public class AuthService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ITokenService tokenService) : IAuthService
+    public class AuthService(
+        UserManager<ApplicationUser> userManager,
+        SignInManager<ApplicationUser> signInManager,
+        ITokenService tokenService,
+        ISubscriptionCategoryService subscriptionCategoryService) : IAuthService
     {
         public async Task<AuthResult> LoginAsync(LoginRequest dto)
         {
@@ -31,6 +35,9 @@ namespace SubwatchApi.Services
 
             if (!result.Succeeded)
                 return AuthResult.Failure(result.Errors.Select(e => e.Description));
+
+            await subscriptionCategoryService.CreateAsync(
+                new CreateSubscriptionCategoryRequest("Uncategorized", null), user.Id);
 
             return AuthResult.Success(tokenService.GenerateJwtToken(user));
         }

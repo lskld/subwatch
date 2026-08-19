@@ -4,7 +4,7 @@ namespace SubwatchApi.Services
 {
     public interface ISubscriptionService
     {
-        Task<SubscriptionResponse> CreateAsync(CreateSubscriptionCategoryRequest req, string userId);
+        Task<SubscriptionResponse> CreateAsync(CreateSubscriptionRequest req, string userId);
         Task<SubscriptionResponse?> GetByIdAsync(int id, string userId);
         Task<List<SubscriptionResponse>> GetAllAsync(string userId);
     }

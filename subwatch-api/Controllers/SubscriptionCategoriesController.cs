@@ -23,5 +23,12 @@ namespace SubwatchApi.Controllers
             var category = await subscriptionCategoryService.GetByIdAsync(id, User.GetUserId());
             return category is null ? NotFound() : Ok(category);
         }
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var categories = await subscriptionCategoryService.GetAllAsync(User.GetUserId());
+            return Ok(categories);
+        }
     }
 }

@@ -1,17 +1,20 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SubwatchApi.Models.DTOs;
+using SubwatchApi.Services;
 
 namespace SubwatchApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SubscriptionCategoriesController : ControllerBase
+    public class SubscriptionCategoriesController(ISubscriptionCategoryService subscriptionCategoryService) : ControllerBase
     {
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create(CreateSubscriptionCategoryRequest req)
         {
-            throw new NotImplementedException();
+            var result = await subscriptionCategoryService.CreateAsync(req, User.GetUserId());
+            return Created($"api/subscriptioncategories/{result.Id}", result);
         }
-    }    
+    }
 }

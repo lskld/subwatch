@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SubwatchApi.Models.DTOs;
 
 namespace SubwatchApi.Controllers
 {
@@ -9,7 +10,7 @@ namespace SubwatchApi.Controllers
     public class PriceHistoriesController : ControllerBase
     {
         [HttpPost]
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create(CreatePriceHistoryRequest req)
         {
             throw new NotImplementedException();
         }
@@ -24,7 +25,7 @@ namespace SubwatchApi.Controllers
             throw new NotImplementedException();
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id)
+        public async Task<IActionResult> Update(int id, UpdatePriceHistoryRequest req)
         {
             throw new NotImplementedException();
         }

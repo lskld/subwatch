@@ -22,7 +22,7 @@ namespace SubwatchApi.Controllers
             var priceHistory = await priceHistoryService.GetByIdAsync(id, User.GetUserId());
             return priceHistory is null ? NotFound() : Ok(priceHistory);
         }
-        [HttpGet("/subscription/{subscriptionId}")]
+        [HttpGet("subscription/{subscriptionId}")]
         public async Task<IActionResult> GetAllBySubscriptionId(int subscriptionId)
         {
             var priceHistories = await priceHistoryService.GetAllBySubscriptionIdAsync(subscriptionId, User.GetUserId());

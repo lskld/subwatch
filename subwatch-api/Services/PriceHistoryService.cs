@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using SubwatchApi.Data;
 using SubwatchApi.Models.DTOs;
@@ -27,11 +28,17 @@ namespace SubwatchApi.Services
         }
         public async Task<PriceHistoryResponse?> GetByIdAsync(int id, string userId)
         {
-            throw new NotImplementedException();
+            return await dbContext.PriceHistories
+                .Where(ph => ph.Id == id && ph.Subscription.UserId == userId)
+                .Select(ph => new PriceHistoryResponse(ph.Id, ph.Price, ph.StartDate, ph.EndDate, ph.SubscriptionId))
+                .FirstOrDefaultAsync();
         }
-        public async Task<List<PriceHistoryResponse>> GetAllBySubscriptionIdAsync(string subscriptionId, string userId)
+        public async Task<List<PriceHistoryResponse>> GetAllBySubscriptionIdAsync(int subscriptionId, string userId)
         {
-            throw new NotImplementedException();
+            return await dbContext.PriceHistories
+                .Where(ph => ph.SubscriptionId == subscriptionId && ph.Subscription.UserId == userId)
+                .Select(ph => new PriceHistoryResponse(ph.Id, ph.Price, ph.StartDate, ph.EndDate, ph.SubscriptionId))
+                .ToListAsync();
         }
         public async Task<PriceHistoryResponse?> UpdateAsync(int id, UpdatePriceHistoryRequest req, string userId)
         {

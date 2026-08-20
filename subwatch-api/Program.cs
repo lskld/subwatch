@@ -60,6 +60,7 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ISubscriptionCategoryService, SubscriptionCategoryService>();
 builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
+builder.Services.AddScoped<IPriceHistoryService, PriceHistoryService>();
 
 var app = builder.Build();
 

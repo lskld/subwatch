@@ -31,7 +31,8 @@ namespace SubwatchApi.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, UpdatePriceHistoryRequest req)
         {
-            throw new NotImplementedException();
+            var priceHistory = await priceHistoryService.UpdateAsync(id, req, User.GetUserId());
+            return priceHistory is null ? NotFound() : Ok(priceHistory);
         }
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)

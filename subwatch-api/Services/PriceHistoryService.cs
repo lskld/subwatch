@@ -42,7 +42,18 @@ namespace SubwatchApi.Services
         }
         public async Task<PriceHistoryResponse?> UpdateAsync(int id, UpdatePriceHistoryRequest req, string userId)
         {
-            throw new NotImplementedException();
+            var priceHistory = await dbContext.PriceHistories
+                .FirstOrDefaultAsync(ph => ph.Id == id && ph.Subscription.UserId == userId);
+
+            if (priceHistory is null) return null;
+
+            priceHistory.Price = req.Price;
+            priceHistory.StartDate = req.StartDate;
+            priceHistory.EndDate = req.EndDate;
+
+            await dbContext.SaveChangesAsync();
+
+            return new PriceHistoryResponse(priceHistory.Id, priceHistory.Price, priceHistory.StartDate, priceHistory.EndDate, priceHistory.SubscriptionId);
         }
         public async Task<bool> DeleteAsync(int id, string userId)
         {

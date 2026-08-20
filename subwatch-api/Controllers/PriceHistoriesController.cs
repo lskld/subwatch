@@ -13,7 +13,8 @@ namespace SubwatchApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreatePriceHistoryRequest req)
         {
-            throw new NotImplementedException();
+            var result = await priceHistoryService.CreateAsync(req, User.GetUserId());
+            return Created();
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)

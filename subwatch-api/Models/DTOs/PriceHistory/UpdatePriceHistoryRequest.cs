@@ -8,5 +8,4 @@ namespace SubwatchApi.Models.DTOs
         [Required] DateTime StartDate,
         DateTime? EndDate
     );
-
 }

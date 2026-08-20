@@ -1,13 +1,14 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SubwatchApi.Models.DTOs;
+using SubwatchApi.Services;
 
 namespace SubwatchApi.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class PriceHistoriesController : ControllerBase
+    public class PriceHistoriesController(IPriceHistoryService priceHistoryService) : ControllerBase
     {
         [HttpPost]
         public async Task<IActionResult> Create(CreatePriceHistoryRequest req)

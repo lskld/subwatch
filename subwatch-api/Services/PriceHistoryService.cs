@@ -57,7 +57,14 @@ namespace SubwatchApi.Services
         }
         public async Task<bool> DeleteAsync(int id, string userId)
         {
-            throw new NotImplementedException();
+            var priceHistory = await dbContext.PriceHistories
+                .FirstOrDefaultAsync(ph => ph.Id == id && ph.Subscription.UserId == userId);
+
+            if (priceHistory is null) return false;
+
+            dbContext.PriceHistories.Remove(priceHistory);
+            await dbContext.SaveChangesAsync();
+            return true;
         }
     }
 }

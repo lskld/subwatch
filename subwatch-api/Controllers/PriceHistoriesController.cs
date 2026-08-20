@@ -37,7 +37,8 @@ namespace SubwatchApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            throw new NotImplementedException();
+            var deleted = await priceHistoryService.DeleteAsync(id, User.GetUserId());
+            return deleted ? NoContent() : NotFound();
         }
     }
 }

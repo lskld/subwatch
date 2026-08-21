@@ -10,4 +10,5 @@
     html {
         background-color: var(--color-bg);
     }
+    h1 { font-size: x-large }
 }

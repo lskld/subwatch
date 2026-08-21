@@ -56,7 +56,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 
-builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddSingleton<ITokenService, TokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ISubscriptionCategoryService, SubscriptionCategoryService>();
 builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();

@@ -10,6 +10,7 @@ namespace SubwatchApi.Services
         public async Task<SubscriptionResponse> CreateAsync(CreateSubscriptionRequest req, string userId)
         {
             var category = await dbContext.SubscriptionCategories
+                .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == req.SubscriptionCategoryId && c.UserId == userId)
                 ?? throw new UnauthorizedAccessException();
 
@@ -86,6 +87,7 @@ namespace SubwatchApi.Services
             if (subscription is null) return null;
 
             var category = await dbContext.SubscriptionCategories
+                .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == req.SubscriptionCategoryId && c.UserId == userId)
                 ?? throw new UnauthorizedAccessException();
 

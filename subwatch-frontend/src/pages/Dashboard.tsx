@@ -1,7 +1,7 @@
 import { IconZoomMoneyFilled } from "@tabler/icons-react";
-import CreateSubscriptionButton from "./CreateSubscriptionButton";
-import FilterButton from "./FilterButton";
-import SearchBar from "./SearchBar";
+import CreateSubscriptionButton from "../components/CreateSubscriptionButton";
+import FilterButton from "../components/FilterButton";
+import SearchBar from "../components/SearchBar";
 
 export default function Dashboard() {
 	return (

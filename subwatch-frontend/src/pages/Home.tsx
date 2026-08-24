@@ -1,4 +1,6 @@
 import { IconZoomMoneyFilled } from "@tabler/icons-react";
+import LoginButton from "../components/LoginButton";
+import RegisterButton from "../components/RegisterButton";
 
 export default function Home() {
 	return (
@@ -14,8 +16,8 @@ export default function Home() {
 					</div>
 				</div>
 				<div className="flex justify-center gap-5">
-					<button className="h-10 w-30 bg-green-400">Login</button>
-					<button className="h-10 w-30 bg-green-400">Register</button>
+					<LoginButton />
+					<RegisterButton />
 				</div>
 			</div>
 		</section>

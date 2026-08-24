@@ -1,14 +1,23 @@
-import Dashboard from "./components/Dashboard";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Dashboard from "./pages/Dashboard";
+import Home from "./pages/Home";
+import NotFound from "./pages/NotFound";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 function App() {
 	return (
-		<>
-			<div className="min-h-svh flex flex-col">
-				<main className="w-full xl:w-[70%] mx-auto flex flex-col flex-1">
-					<Dashboard />
-				</main>
-			</div>
-		</>
+		<BrowserRouter>
+			<main>
+				<Routes>
+					<Route path="/" element={<Home />} />
+					<Route path="login" element={<Login />} />
+					<Route path="register" element={<Register />} />
+					<Route path="dashboard" element={<Dashboard />} />
+					<Route path="*" element={<NotFound />} />
+				</Routes>
+			</main>
+		</BrowserRouter>
 	);
 }
 

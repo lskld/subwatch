@@ -1,12 +1,12 @@
 import { IconZoomMoneyFilled } from "@tabler/icons-react";
-import CreateSubscriptionButton from "./CreateSubscriptionButton";
-import FilterButton from "./FilterButton";
-import SearchBar from "./SearchBar";
+import CreateSubscriptionButton from "../components/CreateSubscriptionButton";
+import FilterButton from "../components/FilterButton";
+import SearchBar from "../components/SearchBar";
 
 export default function Dashboard() {
 	return (
 		<>
-			<section className="bg-white flex flex-col flex-1 px-2 xl:px-20">
+			<section className="w-full xl:w-[70%] mx-auto flex flex-col flex-1 min-h-svh bg-white px-2 xl:px-20">
 				<div className="flex justify-center items-center gap-2 mt-5 xl:mt-15">
 					<IconZoomMoneyFilled className="size-10 xl:size-14" />
 					<div>

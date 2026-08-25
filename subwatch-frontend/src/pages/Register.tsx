@@ -1,6 +1,47 @@
+import { IconArrowRight } from "@tabler/icons-react";
+import { useState } from "react";
+
+function handleRegistration() {}
 
 export default function Register() {
-    return (
-        <p>This is the register page</p>
-    )
+	const [username, setUsername] = useState("");
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+
+	return (
+		<section className="min-h-svh flex justify-center items-center">
+			<form className="flex flex-col gap-5">
+				<h1>Register a new user</h1>
+				<input
+					className="bg-white border h-7.5 px-1.5"
+					type="text"
+					placeholder="Username"
+					value={username}
+					onChange={(e) => setUsername(e.target.value)}
+				/>
+				<input
+					className="bg-white border h-7.5 px-1.5"
+					type="text"
+					placeholder="Email"
+					value={email}
+					onChange={(e) => setEmail(e.target.value)}
+				/>
+				<input
+					className="bg-white border h-7.5 px-1.5"
+					type="text"
+					placeholder="Password"
+					value={password}
+					onChange={(e) => setPassword(e.target.value)}
+				/>
+				<button
+					className="flex flex-row  justify-center items-center m-auto h-10 w-30 bg-green-400 cursor-pointer hover:opacity-75"
+					type="submit"
+					onClick={handleRegistration}
+				>
+					Register
+					<IconArrowRight size={16} />
+				</button>
+			</form>
+		</section>
+	);
 }

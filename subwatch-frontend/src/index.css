@@ -4,6 +4,15 @@
 @theme {
     --font-sans: "Manrope", sans-serif;
     --color-bg: #EDEDED;
+    --color-primary: #8FBF94;
+    --color-primary-red: #FFAEAE;
+    --color-primary-yellow: #FFE3BD;
+    --color-primary-blue: #B4C9FF;
+    --color-warning: #FF6E6E;
+
+    --color-btn-primary: #8FBF94;
+    --color-btn-secondary: #D4D4D4;
+    --color-btn-warning: #FF6E6E;
 }
 
 @layer base {

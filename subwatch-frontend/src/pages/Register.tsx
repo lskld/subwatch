@@ -1,6 +1,9 @@
+import RegistrationForm from "../components/RegistrationForm";
 
 export default function Register() {
-    return (
-        <p>This is the register page</p>
-    )
+	return (
+		<section className="min-h-svh flex justify-center items-center">
+			<RegistrationForm />
+		</section>
+	);
 }

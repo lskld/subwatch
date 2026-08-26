@@ -1,7 +1,8 @@
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { authApi } from "../lib/axios-instance";
+import { useAuth } from "../lib/auth-context";
 
 type FormInputs = {
 	username: string;
@@ -9,17 +10,22 @@ type FormInputs = {
 	password: string;
 };
 
-const handleRegistration: SubmitHandler<FormInputs> = async (data) => {
-	const response = await authApi.post("/register", data);
-	return response.data;
-};
-
 export default function RegistrationForm() {
+	const { login } = useAuth();
+	const navigate = useNavigate();
+
+	const handleRegistration: SubmitHandler<FormInputs> = async (data) => {
+		const response = await authApi.post("/register", data);
+		login(response.data.token as string);
+		navigate("/dashboard");
+	};
+
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 	} = useForm<FormInputs>();
+
 	return (
 		<form
 			className="flex flex-col gap-5 xl:border xl:p-20 bg-white justify-center items-center"
@@ -30,7 +36,6 @@ export default function RegistrationForm() {
 				Back home
 			</NavLink>
 			<h1>Register a user</h1>
-			<p className="text-red-500">{errors.username?.message}</p>
 			<input
 				className="bg-white border h-7.5 px-1.5"
 				placeholder="Username"
@@ -41,7 +46,7 @@ export default function RegistrationForm() {
 					},
 				})}
 			/>
-			<p className="text-red-500">{errors.email?.message}</p>
+			<p className="text-red-500">{errors.username?.message}</p>
 			<input
 				className="bg-white border h-7.5 px-1.5"
 				placeholder="Email"
@@ -56,9 +61,7 @@ export default function RegistrationForm() {
 					},
 				})}
 			/>
-			<p className="wrap-break-word w-80 text-center text-red-500">
-				{errors.password?.message}
-			</p>
+			<p className="text-red-500">{errors.email?.message}</p>
 			<input
 				className="bg-white border h-7.5 px-1.5"
 				placeholder="Password"
@@ -74,6 +77,9 @@ export default function RegistrationForm() {
 					},
 				})}
 			/>
+			<p className="wrap-break-word w-80 text-center text-red-500">
+				{errors.password?.message}
+			</p>
 			<button
 				className="flex justify-center items-center m-auto h-10 w-30 bg-green-400 cursor-pointer hover:opacity-75 border"
 				type="submit"

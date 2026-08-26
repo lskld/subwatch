@@ -5,7 +5,7 @@ export default function LoginButton() {
 			<NavLink to={"login"}>
 				<button
 					type="button"
-					className="h-10 w-30 bg-green-400 cursor-pointer hover:opacity-75 border"
+					className="h-10 w-30 bg-btn-primary cursor-pointer hover:opacity-75 border"
 				>
 					Login
 				</button>

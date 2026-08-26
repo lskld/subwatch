@@ -58,7 +58,7 @@ export default function RegistrationForm() {
 					},
 				})}
 			/>
-			<p className="text-red-500">{errors.username?.message}</p>
+			<p className="text-warning">{errors.username?.message}</p>
 			<input
 				className="bg-white border h-7.5 px-1.5"
 				placeholder="Email"
@@ -73,7 +73,7 @@ export default function RegistrationForm() {
 					},
 				})}
 			/>
-			<p className="text-red-500">{errors.email?.message}</p>
+			<p className="text-warning">{errors.email?.message}</p>
 			<input
 				type="password"
 				className="bg-white border h-7.5 px-1.5"
@@ -90,17 +90,17 @@ export default function RegistrationForm() {
 					},
 				})}
 			/>
-			<p className="wrap-break-word w-80 text-center text-red-500">
+			<p className="wrap-break-word w-80 text-center text-warning">
 				{errors.password?.message}
 			</p>
 			<button
-				className="flex justify-center items-center m-auto h-10 w-30 bg-green-400 cursor-pointer hover:opacity-75 border"
+				className="flex justify-center items-center m-auto h-10 w-30 bg-primary cursor-pointer hover:opacity-75 border"
 				type="submit"
 			>
 				Register
 				<IconArrowRight size={16} />
 			</button>
-			<p className="wrap-break-word w-80 text-center text-red-500">
+			<p className="wrap-break-word w-80 text-center text-warning">
 				{errors.root?.message}
 			</p>
 		</form>

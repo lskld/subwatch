@@ -14,10 +14,10 @@ export default function LogoutButton() {
 
     return (
 			<NavLink to={"/"}>
-            <button
-                    onClick={handleLogout}
+				<button
+					onClick={handleLogout}
 					type="button"
-					className="h-10 w-30 bg-red-400 cursor-pointer hover:opacity-75 border"
+					className="h-10 w-30 bg-btn-warning cursor-pointer hover:opacity-75 border"
 				>
 					Logout
 				</button>

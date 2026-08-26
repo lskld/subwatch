@@ -3,6 +3,7 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { NavLink, useNavigate } from "react-router-dom";
 import { authApi } from "../lib/axios-instance";
 import { useAuth } from "../lib/auth-context";
+import axios from "axios";
 
 type FormInputs = {
 	username: string;
@@ -15,14 +16,23 @@ export default function RegistrationForm() {
 	const navigate = useNavigate();
 
 	const handleRegistration: SubmitHandler<FormInputs> = async (data) => {
-		const response = await authApi.post("/register", data);
-		login(response.data.token as string);
-		navigate("/dashboard");
+		try {
+			const response = await authApi.post("/register", data);
+			login(response.data.token as string);
+			navigate("/dashboard");
+		} catch (error) {
+			if (axios.isAxiosError(error) && error.response?.status === 400) {
+				const errors = error.response.data.errors;
+				const message = Object.values(errors).flat()[0];
+				setError("root", { message: message as string });
+			}
+		}
 	};
 
 	const {
 		register,
 		handleSubmit,
+		setError,
 		formState: { errors },
 	} = useForm<FormInputs>();
 
@@ -87,6 +97,9 @@ export default function RegistrationForm() {
 				Register
 				<IconArrowRight size={16} />
 			</button>
+			<p className="wrap-break-word w-80 text-center text-red-500">
+				{errors.root?.message}
+			</p>
 		</form>
 	);
 }

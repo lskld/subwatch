@@ -25,6 +25,8 @@ export default function RegistrationForm() {
 				const errors = error.response.data.errors;
 				const message = Object.values(errors).flat()[0];
 				setError("root", { message: message as string });
+			} else {
+				setError("root", { message: "An error has occured, try again..." });
 			}
 		}
 	};
@@ -73,6 +75,7 @@ export default function RegistrationForm() {
 			/>
 			<p className="text-red-500">{errors.email?.message}</p>
 			<input
+				type="password"
 				className="bg-white border h-7.5 px-1.5"
 				placeholder="Password"
 				{...register("password", {

@@ -5,6 +5,7 @@ import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import { AuthProvider } from "./lib/auth-context";
+import { ProtectedRoute } from "./lib/protected-route";
 
 function App() {
 	return (
@@ -15,7 +16,14 @@ function App() {
 						<Route path="/" element={<Home />} />
 						<Route path="login" element={<Login />} />
 						<Route path="register" element={<Register />} />
-						<Route path="dashboard" element={<Dashboard />} />
+						<Route
+							path="dashboard"
+							element={
+								<ProtectedRoute>
+									<Dashboard />
+								</ProtectedRoute>
+							}
+						/>
 						<Route path="*" element={<NotFound />} />
 					</Routes>
 				</main>

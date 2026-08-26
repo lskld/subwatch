@@ -1,7 +1,7 @@
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { NavLink, useNavigate } from "react-router-dom";
-import { authApi } from "../lib/axios-instance";
+import { mainApi } from "../lib/axios-instance";
 import { useAuth } from "../lib/auth-context";
 import axios from "axios";
 
@@ -17,7 +17,7 @@ export default function RegistrationForm() {
 
 	const handleRegistration: SubmitHandler<FormInputs> = async (data) => {
 		try {
-			const response = await authApi.post("/register", data);
+			const response = await mainApi.post("/auth/register", data);
 			login(response.data.token as string);
 			navigate("/dashboard");
 		} catch (error) {

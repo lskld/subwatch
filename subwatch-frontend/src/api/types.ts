@@ -23,4 +23,4 @@ export type SubscriptionCategoryResponse =
 export type SubscriptionResponse = Omit<
 	components["schemas"]["SubscriptionResponse"],
 	"billingInterval"
-> & { billingInterval: string };
+> & { billingInterval: string; price: number; id: number };

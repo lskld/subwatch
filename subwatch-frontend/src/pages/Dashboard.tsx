@@ -11,6 +11,10 @@ export default function Dashboard() {
 	const [subscriptions, setSubscriptions] = useState<SubscriptionResponse[]>(
 		[],
 	);
+	const totalPrice = subscriptions.reduce(
+		(sum, subscription) => sum + subscription.price,
+		0,
+	);
 
 	useEffect(() => {
 		async function loadSubscriptions() {
@@ -53,6 +57,10 @@ export default function Dashboard() {
 					price={subscription.price}
 				/>
 			))}
+			<div className="flex justify-between text-sm xl:text-base">
+				<p>Subscriptions: {subscriptions.length}</p>
+				<p>Total monthly cost: {totalPrice}</p>
+			</div>
 		</section>
 	);
 }

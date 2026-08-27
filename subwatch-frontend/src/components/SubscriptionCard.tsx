@@ -2,7 +2,7 @@ type SubscriptionCardProps = {
 	name: string;
 	billingInterval: string;
 	billingDate: string;
-	price: string | number;
+	price: number;
 };
 
 export default function SubscriptionCard({

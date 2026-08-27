@@ -33,7 +33,11 @@ export interface paths {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content?: never;
+                    content: {
+                        "text/plain": components["schemas"]["AuthResult"];
+                        "application/json": components["schemas"]["AuthResult"];
+                        "text/json": components["schemas"]["AuthResult"];
+                    };
                 };
             };
         };
@@ -72,7 +76,11 @@ export interface paths {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content?: never;
+                    content: {
+                        "text/plain": components["schemas"]["AuthResult"];
+                        "application/json": components["schemas"]["AuthResult"];
+                        "text/json": components["schemas"]["AuthResult"];
+                    };
                 };
             };
         };
@@ -136,7 +144,11 @@ export interface paths {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content?: never;
+                    content: {
+                        "text/plain": components["schemas"]["UserResponse"];
+                        "application/json": components["schemas"]["UserResponse"];
+                        "text/json": components["schemas"]["UserResponse"];
+                    };
                 };
             };
         };
@@ -177,7 +189,11 @@ export interface paths {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content?: never;
+                    content: {
+                        "text/plain": components["schemas"]["PriceHistoryResponse"];
+                        "application/json": components["schemas"]["PriceHistoryResponse"];
+                        "text/json": components["schemas"]["PriceHistoryResponse"];
+                    };
                 };
             };
         };
@@ -210,7 +226,11 @@ export interface paths {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content?: never;
+                    content: {
+                        "text/plain": components["schemas"]["PriceHistoryResponse"];
+                        "application/json": components["schemas"]["PriceHistoryResponse"];
+                        "text/json": components["schemas"]["PriceHistoryResponse"];
+                    };
                 };
             };
         };
@@ -236,7 +256,11 @@ export interface paths {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content?: never;
+                    content: {
+                        "text/plain": components["schemas"]["PriceHistoryResponse"];
+                        "application/json": components["schemas"]["PriceHistoryResponse"];
+                        "text/json": components["schemas"]["PriceHistoryResponse"];
+                    };
                 };
             };
         };
@@ -289,7 +313,11 @@ export interface paths {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content?: never;
+                    content: {
+                        "text/plain": components["schemas"]["PriceHistoryResponse"][];
+                        "application/json": components["schemas"]["PriceHistoryResponse"][];
+                        "text/json": components["schemas"]["PriceHistoryResponse"][];
+                    };
                 };
             };
         };
@@ -322,7 +350,11 @@ export interface paths {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content?: never;
+                    content: {
+                        "text/plain": components["schemas"]["SubscriptionCategoryResponse"][];
+                        "application/json": components["schemas"]["SubscriptionCategoryResponse"][];
+                        "text/json": components["schemas"]["SubscriptionCategoryResponse"][];
+                    };
                 };
             };
         };
@@ -347,7 +379,11 @@ export interface paths {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content?: never;
+                    content: {
+                        "text/plain": components["schemas"]["SubscriptionCategoryResponse"];
+                        "application/json": components["schemas"]["SubscriptionCategoryResponse"];
+                        "text/json": components["schemas"]["SubscriptionCategoryResponse"];
+                    };
                 };
             };
         };
@@ -380,7 +416,11 @@ export interface paths {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content?: never;
+                    content: {
+                        "text/plain": components["schemas"]["SubscriptionCategoryResponse"];
+                        "application/json": components["schemas"]["SubscriptionCategoryResponse"];
+                        "text/json": components["schemas"]["SubscriptionCategoryResponse"];
+                    };
                 };
             };
         };
@@ -406,7 +446,11 @@ export interface paths {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content?: never;
+                    content: {
+                        "text/plain": components["schemas"]["SubscriptionCategoryResponse"];
+                        "application/json": components["schemas"]["SubscriptionCategoryResponse"];
+                        "text/json": components["schemas"]["SubscriptionCategoryResponse"];
+                    };
                 };
             };
         };
@@ -457,7 +501,11 @@ export interface paths {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content?: never;
+                    content: {
+                        "text/plain": components["schemas"]["SubscriptionResponse"][];
+                        "application/json": components["schemas"]["SubscriptionResponse"][];
+                        "text/json": components["schemas"]["SubscriptionResponse"][];
+                    };
                 };
             };
         };
@@ -482,7 +530,11 @@ export interface paths {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content?: never;
+                    content: {
+                        "text/plain": components["schemas"]["SubscriptionResponse"];
+                        "application/json": components["schemas"]["SubscriptionResponse"];
+                        "text/json": components["schemas"]["SubscriptionResponse"];
+                    };
                 };
             };
         };
@@ -515,7 +567,11 @@ export interface paths {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content?: never;
+                    content: {
+                        "text/plain": components["schemas"]["SubscriptionResponse"];
+                        "application/json": components["schemas"]["SubscriptionResponse"];
+                        "text/json": components["schemas"]["SubscriptionResponse"];
+                    };
                 };
             };
         };
@@ -541,7 +597,11 @@ export interface paths {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content?: never;
+                    content: {
+                        "text/plain": components["schemas"]["SubscriptionResponse"];
+                        "application/json": components["schemas"]["SubscriptionResponse"];
+                        "text/json": components["schemas"]["SubscriptionResponse"];
+                    };
                 };
             };
         };
@@ -575,6 +635,11 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        AuthResult: {
+            succeeded?: boolean;
+            token?: null | string;
+            errors?: string[];
+        };
         BillingInterval: number;
         CreatePriceHistoryRequest: {
             /** Format: double */
@@ -605,10 +670,40 @@ export interface components {
             email: string;
             password: string;
         };
+        PriceHistoryResponse: {
+            /** Format: int32 */
+            id: number | string;
+            /** Format: double */
+            price: number | string;
+            /** Format: date-time */
+            startDate: string;
+            /** Format: date-time */
+            endDate: null | string;
+            /** Format: int32 */
+            subscriptionId: number | string;
+        };
         RegisterRequest: {
             username: string;
             email: string;
             password: string;
+        };
+        SubscriptionCategoryResponse: {
+            /** Format: int32 */
+            id: number | string;
+            title: string;
+            description: null | string;
+        };
+        SubscriptionResponse: {
+            /** Format: int32 */
+            id: number | string;
+            title: string;
+            description: null | string;
+            /** Format: double */
+            price: number | string;
+            billingInterval: components["schemas"]["BillingInterval"];
+            /** Format: date-time */
+            nextBillingDate: string;
+            subscriptionCategoryResponse: components["schemas"]["SubscriptionCategoryResponse"];
         };
         UpdatePriceHistoryRequest: {
             /** Format: double */
@@ -632,6 +727,11 @@ export interface components {
             nextBillingDate: string;
             /** Format: int32 */
             subscriptionCategoryId: number | string;
+        };
+        UserResponse: {
+            userId: string;
+            username: string;
+            email: string;
         };
     };
     responses: never;

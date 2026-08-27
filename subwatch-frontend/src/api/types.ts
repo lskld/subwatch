@@ -4,8 +4,10 @@ export type CreatePriceHistoryRequest =
 	components["schemas"]["CreatePriceHistoryRequest"];
 export type CreateSubscriptionCategoryRequest =
 	components["schemas"]["CreateSubscriptionCategoryRequest"];
-export type CreateSubscriptionRequest =
-	components["schemas"]["CreateSubscriptionRequest"];
+export type CreateSubscriptionRequest = Omit<
+	components["schemas"]["CreateSubscriptionRequest"],
+	"billingInterval"
+> & { billingInterval: string };
 export type LoginRequest = components["schemas"]["LoginRequest"];
 export type RegisterRequest = components["schemas"]["RegisterRequest"];
 export type UpdatePriceHistoryRequest =
@@ -22,5 +24,5 @@ export type SubscriptionCategoryResponse =
 	components["schemas"]["SubscriptionCategoryResponse"];
 export type SubscriptionResponse = Omit<
 	components["schemas"]["SubscriptionResponse"],
-	"billingInterval"
+	"billingInterval" | "price" | "id"
 > & { billingInterval: string; price: number; id: number };

@@ -11,25 +11,25 @@ namespace SubwatchApi.Controllers
     public class PriceHistoriesController(IPriceHistoryService priceHistoryService) : ControllerBase
     {
         [HttpPost]
-        public async Task<IActionResult> Create(CreatePriceHistoryRequest req)
+        public async Task<ActionResult<PriceHistoryResponse>> Create(CreatePriceHistoryRequest req)
         {
             var result = await priceHistoryService.CreateAsync(req, User.GetUserId());
             return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
         }
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<ActionResult<PriceHistoryResponse>> GetById(int id)
         {
             var priceHistory = await priceHistoryService.GetByIdAsync(id, User.GetUserId());
             return priceHistory is null ? NotFound() : Ok(priceHistory);
         }
         [HttpGet("subscription/{subscriptionId}")]
-        public async Task<IActionResult> GetAllBySubscriptionId(int subscriptionId)
+        public async Task<ActionResult<List<PriceHistoryResponse>>> GetAllBySubscriptionId(int subscriptionId)
         {
             var priceHistories = await priceHistoryService.GetAllBySubscriptionIdAsync(subscriptionId, User.GetUserId());
             return Ok(priceHistories);
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, UpdatePriceHistoryRequest req)
+        public async Task<ActionResult<PriceHistoryResponse>> Update(int id, UpdatePriceHistoryRequest req)
         {
             var priceHistory = await priceHistoryService.UpdateAsync(id, req, User.GetUserId());
             return priceHistory is null ? NotFound() : Ok(priceHistory);

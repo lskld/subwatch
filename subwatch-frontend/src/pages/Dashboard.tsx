@@ -1,31 +1,40 @@
 import { IconZoomMoneyFilled } from "@tabler/icons-react";
 import CreateSubscriptionButton from "../components/CreateSubscriptionButton";
 import FilterButton from "../components/FilterButton";
-import SearchBar from "../components/SearchBar";
 import LogoutButton from "../components/LogoutButton";
+import SubscriptionCard from "../components/SubscriptionCard";
 
 export default function Dashboard() {
 	return (
-		<>
-			<section className="w-full xl:w-[70%] mx-auto flex flex-col flex-1 min-h-svh bg-white px-2 xl:px-20">
-				<div className="flex justify-end mt-2">
-					<LogoutButton />
+		<section className="w-full xl:w-[70%] mx-auto flex flex-col flex-1 min-h-svh bg-white px-2 xl:px-20">
+			<div className="flex justify-end mt-2">
+				<LogoutButton />
+			</div>
+			<div className="flex justify-center items-center gap-2 mt-5 xl:mt-15">
+				<IconZoomMoneyFilled className="size-10 xl:size-14" />
+				<div>
+					<h1 className="xl:text-3xl">Subwatch dashboard</h1>
+					<p className="text-right text-gray-500 text-xs xl:text-sm">
+						Keep track of all your expenses
+					</p>
 				</div>
-				<div className="flex justify-center items-center gap-2 mt-5 xl:mt-15">
-					<IconZoomMoneyFilled className="size-10 xl:size-14" />
-					<div>
-						<h1 className="xl:text-3xl">Subwatch dashboard</h1>
-						<p className="text-right text-gray-500 text-xs xl:text-sm">
-							Keep track of all your expenses
-						</p>
-					</div>
-				</div>
-				<div className="mt-15 flex justify-between">
-					<CreateSubscriptionButton />
-					<FilterButton />
-					<SearchBar />
-				</div>
-			</section>
-		</>
+			</div>
+			<div className="mt-15 flex justify-between">
+				<CreateSubscriptionButton />
+				<FilterButton />
+			</div>
+			<div className="grid grid-cols-4 text-center text-sm xl:text-base mt-10 mb-10">
+				<p>Subscription</p>
+				<p>Billing Interval</p>
+				<p>Billing Date</p>
+				<p>Price</p>
+			</div>
+			<SubscriptionCard
+				name="Netflix"
+				billingInterval="Monthly"
+				billingDate={new Date("2026-08-25").toLocaleDateString()}
+				price={219}
+			/>
+		</section>
 	);
 }

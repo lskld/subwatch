@@ -3,7 +3,7 @@ import CreateSubscriptionButton from "../components/CreateSubscriptionButton";
 import FilterButton from "../components/FilterButton";
 import LogoutButton from "../components/LogoutButton";
 import SubscriptionCard from "../components/SubscriptionCard";
-import { getSubscriptions } from "../api/subscriptions";
+import { createSubscription, getSubscriptions } from "../api/subscriptions";
 import { useEffect, useState } from "react";
 import type { SubscriptionResponse } from "../api/types";
 
@@ -24,6 +24,18 @@ export default function Dashboard() {
 		loadSubscriptions();
 	}, []);
 
+	const handleCreate = async () => {
+		const newSubscription = await createSubscription({
+			title: "Netflix",
+			description: null,
+			price: 149,
+			billingInterval: "Monthly",
+			nextBillingDate: "2026-09-25",
+			subscriptionCategoryId: 1,
+		});
+		setSubscriptions((prev) => [...prev, newSubscription]);
+	};
+
 	return (
 		<section className="w-full xl:w-[70%] mx-auto flex flex-col flex-1 min-h-svh bg-white px-2 xl:px-20">
 			<div className="flex justify-end mt-2">
@@ -39,7 +51,7 @@ export default function Dashboard() {
 				</div>
 			</div>
 			<div className="mt-15 flex justify-between">
-				<CreateSubscriptionButton />
+				<CreateSubscriptionButton onClick={handleCreate} />
 				<FilterButton />
 			</div>
 			<div className="grid grid-cols-4 text-center text-xs md:text-base mt-10 mb-2">

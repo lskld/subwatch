@@ -57,10 +57,14 @@ export default function Dashboard() {
 					price={subscription.price}
 				/>
 			))}
-			<div className="flex justify-between text-sm xl:text-base">
-				<p>Subscriptions: {subscriptions.length}</p>
-				<p>Total monthly cost: {totalPrice}</p>
-			</div>
+			{subscriptions.length > 0 ? (
+				<div className="flex justify-between text-sm xl:text-base">
+					<p>Subscriptions: {subscriptions.length}</p>
+					<p>Monthly Total: {totalPrice}</p>
+				</div>
+			) : (
+				<p className="mt-10 text-center">No subscriptions yet</p>
+			)}
 		</section>
 	);
 }

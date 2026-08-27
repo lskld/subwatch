@@ -8,7 +8,9 @@ export default function Dashboard() {
 	return (
 		<>
 			<section className="w-full xl:w-[70%] mx-auto flex flex-col flex-1 min-h-svh bg-white px-2 xl:px-20">
-				<LogoutButton />
+				<div className="flex justify-end mt-2">
+					<LogoutButton />
+				</div>
 				<div className="flex justify-center items-center gap-2 mt-5 xl:mt-15">
 					<IconZoomMoneyFilled className="size-10 xl:size-14" />
 					<div>

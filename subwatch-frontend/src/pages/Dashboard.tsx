@@ -3,8 +3,23 @@ import CreateSubscriptionButton from "../components/CreateSubscriptionButton";
 import FilterButton from "../components/FilterButton";
 import LogoutButton from "../components/LogoutButton";
 import SubscriptionCard from "../components/SubscriptionCard";
+import { getSubscriptions } from "../api/subscriptions";
+import { useEffect, useState } from "react";
+import type { SubscriptionResponse } from "../api/types";
 
 export default function Dashboard() {
+	const [subscriptions, setSubscriptions] = useState<SubscriptionResponse[]>(
+		[],
+	);
+
+	useEffect(() => {
+		async function loadSubscriptions() {
+			const data = await getSubscriptions();
+			setSubscriptions(data);
+		}
+		loadSubscriptions();
+	}, []);
+
 	return (
 		<section className="w-full xl:w-[70%] mx-auto flex flex-col flex-1 min-h-svh bg-white px-2 xl:px-20">
 			<div className="flex justify-end mt-2">
@@ -23,18 +38,21 @@ export default function Dashboard() {
 				<CreateSubscriptionButton />
 				<FilterButton />
 			</div>
-			<div className="grid grid-cols-4 text-center text-sm xl:text-base mt-10 mb-10">
+			<div className="grid grid-cols-4 text-center text-xs md:text-base mt-10 mb-2">
 				<p>Subscription</p>
-				<p>Billing Interval</p>
+				<p>Interval</p>
 				<p>Billing Date</p>
 				<p>Price</p>
 			</div>
-			<SubscriptionCard
-				name="Netflix"
-				billingInterval="Monthly"
-				billingDate={new Date("2026-08-25").toLocaleDateString()}
-				price={219}
-			/>
+			{subscriptions.map((subscription) => (
+				<SubscriptionCard
+					key={subscription.id}
+					name={subscription.title}
+					billingInterval={subscription.billingInterval}
+					billingDate={subscription.nextBillingDate.split("T")[0]}
+					price={subscription.price}
+				/>
+			))}
 		</section>
 	);
 }

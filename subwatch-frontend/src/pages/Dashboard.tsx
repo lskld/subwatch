@@ -5,12 +5,19 @@ import LogoutButton from "../components/LogoutButton";
 import SubscriptionCard from "../components/SubscriptionCard";
 import { getSubscriptions } from "../api/subscriptions";
 import { useEffect, useState } from "react";
-import type { SubscriptionResponse } from "../api/types";
+import type {
+	SubscriptionCategoryResponse,
+	SubscriptionResponse,
+} from "../api/types";
 import CreateSubscriptionModal from "../components/CreateSubscriptionModal";
 import CreateSubscriptionForm from "../components/CreateSubscriptionForm";
+import { getSubscriptionCategories } from "../api/subscription-categories";
 
 export default function Dashboard() {
 	const [subscriptions, setSubscriptions] = useState<SubscriptionResponse[]>(
+		[],
+	);
+	const [categories, setCategories] = useState<SubscriptionCategoryResponse[]>(
 		[],
 	);
 	const [createSubModalOpen, setCreateSubModalOpen] = useState(false);
@@ -26,6 +33,14 @@ export default function Dashboard() {
 			setSubscriptions(data);
 		}
 		loadSubscriptions();
+	}, []);
+
+	useEffect(() => {
+		async function loadCategories() {
+			const data = await getSubscriptionCategories();
+			setCategories(data);
+		}
+		loadCategories();
 	}, []);
 
 	return (
@@ -47,6 +62,7 @@ export default function Dashboard() {
 				{createSubModalOpen && (
 					<CreateSubscriptionModal onClose={() => setCreateSubModalOpen(false)}>
 						<CreateSubscriptionForm
+							categories={categories}
 							onSuccess={(newSubscription) => {
 								setSubscriptions((prev) => [...prev, newSubscription]);
 								setCreateSubModalOpen(false);

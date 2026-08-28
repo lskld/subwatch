@@ -1,11 +1,17 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
-import type { CreateSubscriptionRequest, SubscriptionResponse } from "../api/types";
+import type {
+	CreateSubscriptionRequest,
+	SubscriptionCategoryResponse,
+	SubscriptionResponse,
+} from "../api/types";
 import { createSubscription } from "../api/subscriptions";
 
 export default function CreateSubscriptionForm({
 	onSuccess,
+	categories,
 }: {
 	onSuccess: (subscription: SubscriptionResponse) => void;
+	categories: SubscriptionCategoryResponse[];
 }) {
 	const {
 		register,
@@ -26,28 +32,53 @@ export default function CreateSubscriptionForm({
 			onSubmit={handleSubmit(handleCreate)}
 		>
 			<h1>Create new subscription</h1>
-			<label>Title:</label>
+			<label>
+				Title: <span className="text-warning">{errors.title?.message}</span>
+			</label>
 			<input
 				className="bg-white border h-7.5 px-1.5"
 				placeholder="Eg. Netflix"
-				{...register("title")}
+				{...register("title", {
+					required: {
+						value: true,
+						message: "Required",
+					},
+				})}
 			/>
-			<label>Description (optional)</label>
+			<label>
+				Description (optional){" "}
+				<span className="text-warning">{errors.description?.message}</span>
+			</label>
 			<input
 				className="bg-white border h-7.5 px-1.5"
 				placeholder="Eg. Shared streaming service"
 				{...register("description")}
 			/>
-			<label>Price:</label>
+			<label>
+				Price: <span className="text-warning">{errors.price?.message}</span>
+			</label>
 			<input
 				className="bg-white border h-7.5 px-1.5"
 				placeholder="Eg. 219"
-				{...register("price")}
+				{...register("price", {
+					required: {
+						value: true,
+						message: "Required",
+					},
+				})}
 			/>
-			<label>Billing Interval: </label>
+			<label>
+				Billing Interval:{" "}
+				<span className="text-warning">{errors.billingInterval?.message}</span>
+			</label>
 			<select
 				className="bg-white border h-7.5 px-1.5"
-				{...register("billingInterval")}
+				{...register("billingInterval", {
+					required: {
+						value: true,
+						message: "Required",
+					},
+				})}
 			>
 				<option value="Weekly">Weekly</option>
 				<option value="BiWeekly">BiWeekly</option>
@@ -55,18 +86,40 @@ export default function CreateSubscriptionForm({
 				<option value="Quarterly">Quarterly</option>
 				<option value="Yearly">Yearly</option>
 			</select>
-			<label>Next billing date:</label>
+			<label>
+				Next billing date:{" "}
+				<span className="text-warning">{errors.nextBillingDate?.message}</span>
+			</label>
 			<input
 				type="date"
 				className="bg-white border h-7.5 px-1.5"
-				{...register("nextBillingDate")}
+				{...register("nextBillingDate", {
+					required: {
+						value: true,
+						message: "Required",
+					},
+				})}
 			/>
-			<label>Category:</label>
+			<label>
+				Category:{" "}
+				<span className="text-warning">
+					{errors.subscriptionCategoryId?.message}
+				</span>
+			</label>
 			<select
 				className="bg-white border h-7.5 px-1.5"
-				{...register("subscriptionCategoryId")}
+				{...register("subscriptionCategoryId", {
+					required: {
+						value: true,
+						message: "Required",
+					},
+				})}
 			>
-				<option value="1">Uncategorized</option>
+				{categories.map((category) => (
+					<option key={category.id} value={category.id}>
+						{category.title}
+					</option>
+				))}
 			</select>
 			<button
 				className="flex justify-center items-center m-auto mt-5 h-10 w-30 bg-btn-primary cursor-pointer hover:opacity-75 border"

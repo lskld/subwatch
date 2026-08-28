@@ -1,10 +1,9 @@
 import { IconPlus } from "@tabler/icons-react";
-import type { MouseEventHandler } from "react";
 
 export default function CreateSubscriptionButton({
 	onClick,
 }: {
-	onClick: MouseEventHandler<HTMLButtonElement>;
+	onClick: () => void;
 }) {
 	return (
 		<button

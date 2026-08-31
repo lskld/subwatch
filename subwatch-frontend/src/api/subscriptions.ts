@@ -44,18 +44,13 @@ export async function deleteSubscription(id: number) {
 	await mainApi.delete(`/subscriptions/${id}`);
 }
 
-type UpdateSubscriptionProps = {
-	id: number;
-	updateRequest: UpdateSubscriptionRequest;
-};
-
-export async function updateSubscription({
-	id,
-	updateRequest,
-}: UpdateSubscriptionProps) {
+export async function updateSubscription(
+	id: number,
+	updateReq: UpdateSubscriptionRequest,
+) {
 	const response = await mainApi.put<SubscriptionResponse>(
 		`/subscriptions/${id}`,
-		updateRequest,
+		updateReq,
 	);
 	return response.data;
 }

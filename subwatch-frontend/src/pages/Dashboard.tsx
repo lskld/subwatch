@@ -14,9 +14,9 @@ import CreateSubscriptionForm from "../components/CreateSubscriptionForm";
 import { getSubscriptionCategories } from "../api/subscription-categories";
 import CreateCategoryForm from "../components/CreateCategoryForm";
 import SubscriptionDetailsModal from "../components/SubscriptionDetailsModal";
-import DetailedSubscriptionView from "../components/DetailedSubscriptionView";
 import { toMonthlyPrice } from "../lib/pricing";
 import FilterDropdown from "../components/FilterDropdown";
+import ViewEditSubscription from "../components/ViewEditSubscription";
 
 export default function Dashboard() {
 	const [subscriptions, setSubscriptions] = useState<SubscriptionResponse[]>(
@@ -162,9 +162,18 @@ export default function Dashboard() {
 			)}
 			{selectedSubscription && (
 				<SubscriptionDetailsModal onClose={() => setSelectedSubscription(null)}>
-					<DetailedSubscriptionView
+					<ViewEditSubscription
+						categories={categories}
 						subResponse={selectedSubscription}
 						onDelete={() => handleDelete(selectedSubscription.id)}
+						onUpdate={(updatedSubscription) => {
+							setSubscriptions((prev) =>
+								prev.map((s) =>
+									s.id === updatedSubscription.id ? updatedSubscription : s,
+								),
+							);
+							setSelectedSubscription(null);
+						}}
 						deleteError={deleteError}
 					/>
 				</SubscriptionDetailsModal>

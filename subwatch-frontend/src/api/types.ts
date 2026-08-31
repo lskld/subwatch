@@ -1,7 +1,9 @@
 import type { components } from "./generated-types";
 
-export type CreatePriceHistoryRequest =
-	components["schemas"]["CreatePriceHistoryRequest"];
+export type CreatePriceHistoryRequest = Omit<
+	components["schemas"]["CreatePriceHistoryRequest"],
+	"price"
+> & { price: number };
 export type CreateSubscriptionCategoryRequest =
 	components["schemas"]["CreateSubscriptionCategoryRequest"];
 export type CreateSubscriptionRequest = Omit<

@@ -35,3 +35,7 @@ export async function createSubscription({
 	);
 	return response.data;
 }
+
+export async function deleteSubscription(id: number) {
+	await mainApi.delete(`/subscriptions/${id}`);
+}

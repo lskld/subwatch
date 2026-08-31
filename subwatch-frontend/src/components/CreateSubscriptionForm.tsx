@@ -1,13 +1,11 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 import type {
-	CreatePriceHistoryRequest,
 	CreateSubscriptionRequest,
 	SubscriptionCategoryResponse,
 	SubscriptionResponse,
 } from "../api/types";
 import { createSubscription } from "../api/subscriptions";
 import CreateCategoryButton from "./CreateCategoryButton";
-import { createPricehistory } from "../api/price-history";
 
 export default function CreateSubscriptionForm({
 	onSuccess,
@@ -28,13 +26,6 @@ export default function CreateSubscriptionForm({
 		data,
 	) => {
 		const newSubscription = await createSubscription(data);
-		const priceHistory: CreatePriceHistoryRequest = {
-			price: newSubscription.price,
-			startDate: new Date().toISOString(),
-			endDate: null,
-			subscriptionId: newSubscription.id,
-		};
-		await createPricehistory(priceHistory);
 		onSuccess(newSubscription);
 	};
 

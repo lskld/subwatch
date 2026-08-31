@@ -13,7 +13,7 @@ export default function DetailedSubscriptionView({
 	deleteError,
 }: SubViewProps) {
 	return (
-		<div className="flex flex-col justify-center gap-5">
+		<div className="flex flex-col justify-center gap-5 p-6">
 			<h1>{subResponse.title}</h1>
 			<div>
 				<p>Category: {subResponse.subscriptionCategoryResponse.title}</p>

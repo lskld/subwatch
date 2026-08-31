@@ -16,11 +16,13 @@ import CreateCategoryForm from "../components/CreateCategoryForm";
 import SubscriptionDetailsModal from "../components/SubscriptionDetailsModal";
 import DetailedSubscriptionView from "../components/DetailedSubscriptionView";
 import { toMonthlyPrice } from "../lib/pricing";
+import FilterDropdown from "../components/FilterDropdown";
 
 export default function Dashboard() {
 	const [subscriptions, setSubscriptions] = useState<SubscriptionResponse[]>(
 		[],
 	);
+
 	const [categories, setCategories] = useState<SubscriptionCategoryResponse[]>(
 		[],
 	);
@@ -28,12 +30,21 @@ export default function Dashboard() {
 		"subscription" | "category" | null
 	>(null);
 
+	const [filterDropdownOpen, setFilterDropdownOpen] = useState(false);
+	const [filterSetting, setFilterSetting] =
+		useState<SubscriptionCategoryResponse | null>(null);
+	const filteredSubscriptions = subscriptions.filter(
+		(subscription) =>
+			!filterSetting ||
+			subscription.subscriptionCategoryResponse.id === filterSetting.id,
+	);
+
 	const [selectedSubscription, setSelectedSubscription] =
 		useState<SubscriptionResponse | null>(null);
 
 	const [deleteError, setDeleteError] = useState<string | null>(null);
 
-	const totalPrice = subscriptions.reduce(
+	const totalPrice = filteredSubscriptions.reduce(
 		(sum, subscription) =>
 			sum + toMonthlyPrice(subscription.price, subscription.billingInterval),
 		0,
@@ -112,15 +123,26 @@ export default function Dashboard() {
 						)}
 					</CreateSubscriptionModal>
 				)}
-				<FilterButton />
+				<FilterButton
+					openFilters={() => setFilterDropdownOpen(!filterDropdownOpen)}
+				/>
 			</div>
+			{filterDropdownOpen && (
+				<FilterDropdown
+					categories={categories}
+					onSelect={(category) => {
+						setFilterSetting(category);
+						setFilterDropdownOpen(false);
+					}}
+				/>
+			)}
 			<div className="grid grid-cols-4 text-center text-xs md:text-base mt-10 mb-2">
 				<p>Subscription</p>
 				<p>Interval</p>
 				<p>Billing Date</p>
 				<p>Price</p>
 			</div>
-			{subscriptions.map((subscription) => (
+			{filteredSubscriptions.map((subscription) => (
 				<SubscriptionCard
 					key={subscription.id}
 					name={subscription.title}
@@ -130,9 +152,9 @@ export default function Dashboard() {
 					onClick={() => setSelectedSubscription(subscription)}
 				/>
 			))}
-			{subscriptions.length > 0 ? (
+			{filteredSubscriptions.length > 0 ? (
 				<div className="flex justify-between text-sm xl:text-base">
-					<p>Subscriptions: {subscriptions.length}</p>
+					<p>Subscriptions: {filteredSubscriptions.length}</p>
 					<p>Monthly Total: {totalPrice} kr</p>
 				</div>
 			) : (

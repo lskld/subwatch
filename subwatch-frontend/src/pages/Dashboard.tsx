@@ -12,6 +12,7 @@ import type {
 import CreateSubscriptionModal from "../components/CreateSubscriptionModal";
 import CreateSubscriptionForm from "../components/CreateSubscriptionForm";
 import { getSubscriptionCategories } from "../api/subscription-categories";
+import CreateCategoryForm from "../components/CreateCategoryForm";
 
 export default function Dashboard() {
 	const [subscriptions, setSubscriptions] = useState<SubscriptionResponse[]>(
@@ -20,7 +21,9 @@ export default function Dashboard() {
 	const [categories, setCategories] = useState<SubscriptionCategoryResponse[]>(
 		[],
 	);
-	const [createSubModalOpen, setCreateSubModalOpen] = useState(false);
+	const [subModalView, setSubModalView] = useState<
+		"subscription" | "category" | null
+	>(null);
 
 	const totalPrice = subscriptions.reduce(
 		(sum, subscription) => sum + subscription.price,
@@ -58,16 +61,30 @@ export default function Dashboard() {
 				</div>
 			</div>
 			<div className="mt-15 flex justify-between">
-				<CreateSubscriptionButton onClick={() => setCreateSubModalOpen(true)} />
-				{createSubModalOpen && (
-					<CreateSubscriptionModal onClose={() => setCreateSubModalOpen(false)}>
-						<CreateSubscriptionForm
-							categories={categories}
-							onSuccess={(newSubscription) => {
-								setSubscriptions((prev) => [...prev, newSubscription]);
-								setCreateSubModalOpen(false);
-							}}
-						/>
+				<CreateSubscriptionButton
+					onClick={() => setSubModalView("subscription")}
+				/>
+				{subModalView && (
+					<CreateSubscriptionModal onClose={() => setSubModalView(null)}>
+						{subModalView === "subscription" && (
+							<CreateSubscriptionForm
+								categories={categories}
+								onSuccess={(newSubscription) => {
+									setSubscriptions((prev) => [...prev, newSubscription]);
+									setSubModalView(null);
+								}}
+								onRequestNewCategory={() => setSubModalView("category")}
+							/>
+						)}
+						{subModalView === "category" && (
+							<CreateCategoryForm
+								onBack={() => setSubModalView("subscription")}
+								onSuccess={(newCategory) => {
+									setCategories((prev) => [...prev, newCategory]);
+									setSubModalView("subscription");
+								}}
+							></CreateCategoryForm>
+						)}
 					</CreateSubscriptionModal>
 				)}
 				<FilterButton />

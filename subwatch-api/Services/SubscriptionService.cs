@@ -25,6 +25,15 @@ namespace SubwatchApi.Services
                 UserId = userId
             };
 
+            var priceHistory = new PriceHistory
+            {
+                Price = subscription.Price,
+                StartDate = DateTime.UtcNow,
+                EndDate = null,
+                Subscription = subscription
+            };
+
+            dbContext.PriceHistories.Add(priceHistory);
             dbContext.Subscriptions.Add(subscription);
             await dbContext.SaveChangesAsync();
 

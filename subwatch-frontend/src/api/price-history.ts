@@ -18,9 +18,11 @@ export async function getPricehistory(id: number) {
     return response.data
 }
 
-export async function getPriceHistories() {
-    const response = await mainApi.get<PriceHistoryResponse[]>("/pricehistories")
-    return response.data
+export async function getPriceHistoriesBySubscription(subscriptionId: number) {
+	const response = await mainApi.get<PriceHistoryResponse[]>(
+		`/pricehistories/${subscriptionId}`,
+	);
+	return response.data;
 }
 
 export async function deletePricehistory(id: number) {

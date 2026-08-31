@@ -14,6 +14,7 @@ import CreateSubscriptionForm from "../components/CreateSubscriptionForm";
 import { getSubscriptionCategories } from "../api/subscription-categories";
 import CreateCategoryForm from "../components/CreateCategoryForm";
 import SubscriptionDetailsModal from "../components/SubscriptionDetailsModal";
+import DetailedSubscriptionView from "../components/DetailedSubscriptionView";
 
 export default function Dashboard() {
 	const [subscriptions, setSubscriptions] = useState<SubscriptionResponse[]>(
@@ -26,7 +27,8 @@ export default function Dashboard() {
 		"subscription" | "category" | null
 	>(null);
 
-	const [detailsModalOpen, setDetailsModalOpen] = useState(false);
+	const [selectedSubscription, setSelectedSubscription] =
+		useState<SubscriptionResponse | null>(null);
 
 	const totalPrice = subscriptions.reduce(
 		(sum, subscription) => sum + subscription.price,
@@ -105,7 +107,7 @@ export default function Dashboard() {
 					billingInterval={subscription.billingInterval}
 					billingDate={subscription.nextBillingDate.split("T")[0]}
 					price={subscription.price}
-					onClick={() => setDetailsModalOpen(true)}
+					onClick={() => setSelectedSubscription(subscription)}
 				/>
 			))}
 			{subscriptions.length > 0 ? (
@@ -116,9 +118,19 @@ export default function Dashboard() {
 			) : (
 				<p className="mt-10 text-center">No subscriptions yet</p>
 			)}
-			{detailsModalOpen && (
-				<SubscriptionDetailsModal onClose={() => setDetailsModalOpen(false)}>
-					Children
+			{selectedSubscription && (
+				<SubscriptionDetailsModal onClose={() => setSelectedSubscription(null)}>
+					<DetailedSubscriptionView
+						id={selectedSubscription.id}
+						title={selectedSubscription.title}
+						description={selectedSubscription.description}
+						price={selectedSubscription.price}
+						billingInterval={selectedSubscription.billingInterval}
+						nextBillingDate={selectedSubscription.nextBillingDate}
+						subscriptionCategoryResponse={
+							selectedSubscription.subscriptionCategoryResponse
+						}
+					/>
 				</SubscriptionDetailsModal>
 			)}
 		</section>

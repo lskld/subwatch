@@ -152,7 +152,7 @@ export default function Dashboard() {
 					onClick={() => setSelectedSubscription(subscription)}
 				/>
 			))}
-			{subscriptions.length > 0 ? (
+			{filteredSubscriptions.length > 0 ? (
 				<div className="flex justify-between text-sm xl:text-base">
 					<p>Subscriptions: {filteredSubscriptions.length}</p>
 					<p>Monthly Total: {totalPrice} kr</p>

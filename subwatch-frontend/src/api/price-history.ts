@@ -20,7 +20,7 @@ export async function getPricehistory(id: number) {
 
 export async function getPriceHistoriesBySubscription(subscriptionId: number) {
 	const response = await mainApi.get<PriceHistoryResponse[]>(
-		`/pricehistories/${subscriptionId}`,
+		`/pricehistories/subscription/${subscriptionId}`,
 	);
 	return response.data;
 }

@@ -5,13 +5,16 @@ import type {
 	SubscriptionResponse,
 } from "../api/types";
 import { createSubscription } from "../api/subscriptions";
+import CreateCategoryButton from "./CreateCategoryButton";
 
 export default function CreateSubscriptionForm({
 	onSuccess,
 	categories,
+	onRequestNewCategory,
 }: {
 	onSuccess: (subscription: SubscriptionResponse) => void;
 	categories: SubscriptionCategoryResponse[];
+	onRequestNewCategory: () => void;
 }) {
 	const {
 		register,
@@ -106,21 +109,24 @@ export default function CreateSubscriptionForm({
 					{errors.subscriptionCategoryId?.message}
 				</span>
 			</label>
-			<select
-				className="bg-white border h-7.5 px-1.5"
-				{...register("subscriptionCategoryId", {
-					required: {
-						value: true,
-						message: "Required",
-					},
-				})}
-			>
-				{categories.map((category) => (
-					<option key={category.id} value={category.id}>
-						{category.title}
-					</option>
-				))}
-			</select>
+			<div className="flex flex-row">
+				<select
+					className="bg-white border h-7.5 px-1.5 w-full"
+					{...register("subscriptionCategoryId", {
+						required: {
+							value: true,
+							message: "Required",
+						},
+					})}
+				>
+					{categories.map((category) => (
+						<option key={category.id} value={category.id}>
+							{category.title}
+						</option>
+					))}
+				</select>
+				<CreateCategoryButton onClick={onRequestNewCategory} />
+			</div>
 			<button
 				className="flex justify-center items-center m-auto mt-5 h-10 w-30 bg-btn-primary cursor-pointer hover:opacity-75 border"
 				type="submit"

@@ -11,25 +11,25 @@ namespace SubwatchApi.Controllers
     public class SubscriptionCategoriesController(ISubscriptionCategoryService subscriptionCategoryService) : ControllerBase
     {
         [HttpPost]
-        public async Task<IActionResult> Create(CreateSubscriptionCategoryRequest req)
+        public async Task<ActionResult<SubscriptionCategoryResponse>> Create(CreateSubscriptionCategoryRequest req)
         {
             var result = await subscriptionCategoryService.CreateAsync(req, User.GetUserId());
             return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
         }
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<ActionResult<SubscriptionCategoryResponse>> GetById(int id)
         {
             var category = await subscriptionCategoryService.GetByIdAsync(id, User.GetUserId());
             return category is null ? NotFound() : Ok(category);
         }
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<List<SubscriptionCategoryResponse>>> GetAll()
         {
             var categories = await subscriptionCategoryService.GetAllAsync(User.GetUserId());
             return Ok(categories);
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, UpdateSubscriptionCategoryRequest req)
+        public async Task<ActionResult<SubscriptionCategoryResponse>> Update(int id, UpdateSubscriptionCategoryRequest req)
         {
             var result = await subscriptionCategoryService.UpdateAsync(id, req, User.GetUserId());
             return result is null ? NotFound() : Ok(result);

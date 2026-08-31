@@ -11,25 +11,25 @@ namespace SubwatchApi.Controllers
     public class SubscriptionsController(ISubscriptionService subscriptionService) : ControllerBase
     {
         [HttpPost]
-        public async Task<IActionResult> Create(CreateSubscriptionRequest req)
+        public async Task<ActionResult<SubscriptionResponse>> Create(CreateSubscriptionRequest req)
         {
             var result = await subscriptionService.CreateAsync(req, User.GetUserId());
             return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
         }
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<ActionResult<SubscriptionResponse>> GetById(int id)
         {
             var subscription = await subscriptionService.GetByIdAsync(id, User.GetUserId());
             return subscription is null ? NotFound() : Ok(subscription);
         }
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<List<SubscriptionResponse>>> GetAll()
         {
             var subscriptionList = await subscriptionService.GetAllAsync(User.GetUserId());
             return Ok(subscriptionList);
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, UpdateSubscriptionRequest req)
+        public async Task<ActionResult<SubscriptionResponse>> Update(int id, UpdateSubscriptionRequest req)
         {
             var result = await subscriptionService.UpdateAsync(id, req, User.GetUserId());
             return result is null ? NotFound() : Ok(result);

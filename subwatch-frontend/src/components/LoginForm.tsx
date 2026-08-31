@@ -4,19 +4,15 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../lib/auth-context";
 import { mainApi } from "../lib/axios-instance";
 import axios from "axios";
-
-type FormInputs = {
-	email: string;
-	password: string;
-};
+import type { AuthResult, LoginRequest } from "../api/types";
 
 export default function LoginForm() {
 	const { login } = useAuth();
 	const navigate = useNavigate();
 
-	const handleLogin: SubmitHandler<FormInputs> = async (data) => {
+	const handleLogin: SubmitHandler<LoginRequest> = async (data) => {
 		try {
-			const response = await mainApi.post("/auth/login", data);
+			const response = await mainApi.post<AuthResult>("/auth/login", data);
 			login(response.data.token as string);
 			navigate("/dashboard");
 		} catch (error) {
@@ -35,11 +31,11 @@ export default function LoginForm() {
 		handleSubmit,
 		setError,
 		formState: { errors },
-	} = useForm<FormInputs>();
+	} = useForm<LoginRequest>();
 
 	return (
 		<form
-			className="flex flex-col gap-5 xl:border xl:p-20 bg-white justify-center items-center"
+			className="flex flex-col gap-5 md:border md:p-20 md:bg-white justify-center items-center"
 			onSubmit={handleSubmit(handleLogin)}
 		>
 			<NavLink className="flex m-auto hover:opacity-50" to={"/"}>
@@ -61,7 +57,7 @@ export default function LoginForm() {
 					},
 				})}
 			/>
-			<p className="text-red-500">{errors.email?.message}</p>
+			<p className="text-warning">{errors.email?.message}</p>
 			<input
 				type="password"
 				className="bg-white border h-7.5 px-1.5"
@@ -73,17 +69,17 @@ export default function LoginForm() {
 					},
 				})}
 			/>
-			<p className="wrap-break-word w-80 text-center text-red-500">
+			<p className="wrap-break-word w-80 text-center text-warning">
 				{errors.password?.message}
 			</p>
 			<button
-				className="flex justify-center items-center m-auto h-10 w-30 bg-green-400 cursor-pointer hover:opacity-75 border"
+				className="flex justify-center items-center m-auto h-10 w-30 bg-btn-primary cursor-pointer hover:opacity-75 border"
 				type="submit"
 			>
 				Sign in
 				<IconArrowRight size={16} />
 			</button>
-			<p className="wrap-break-word w-80 text-center text-red-500">
+			<p className="wrap-break-word w-80 text-center text-warning">
 				{errors.root?.message}
 			</p>
 		</form>

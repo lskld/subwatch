@@ -1,9 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SubwatchApi.Models.DTOs;
-using SubwatchApi.Models.Entities;
 using SubwatchApi.Services;
 
 namespace SubwatchApi.Controllers 
@@ -13,25 +11,25 @@ namespace SubwatchApi.Controllers
     public class AuthController(IAuthService authService) : ControllerBase
     {
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginRequest login)
+        public async Task<ActionResult<AuthResult>> Login(LoginRequest login)
         {
             var result = await authService.LoginAsync(login);
 
             if (!result.Succeeded)
-                return BadRequest(new { errors = result.Errors });
+                return BadRequest(result);
 
-            return Ok(new { result.Token });
+            return Ok(result);
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(RegisterRequest register)
+        public async Task<ActionResult<AuthResult>> Register(RegisterRequest register)
         {
             var result = await authService.RegisterAsync(register);
 
             if (!result.Succeeded)
-                return BadRequest(new { errors = result.Errors });
+                return BadRequest(result);
 
-            return Ok(new { result.Token });
+            return Ok(result);
         }
 
         [Authorize]
@@ -43,7 +41,7 @@ namespace SubwatchApi.Controllers
 
         [Authorize]
         [HttpGet("me")]
-        public async Task<IActionResult> Me()
+        public async Task<ActionResult<UserResponse>> Me()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = await authService.GetCurrentUserAsync(userId!);
@@ -51,7 +49,7 @@ namespace SubwatchApi.Controllers
             if (user is null)
                 return NotFound();
 
-            return Ok(new { user.Id, user.Email, user.UserName });
+            return Ok(new UserResponse(user.Id, user.UserName!, user.Email!));
         }
     }
 }

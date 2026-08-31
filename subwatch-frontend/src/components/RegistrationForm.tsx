@@ -4,20 +4,15 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { mainApi } from "../lib/axios-instance";
 import { useAuth } from "../lib/auth-context";
 import axios from "axios";
-
-type FormInputs = {
-	username: string;
-	email: string;
-	password: string;
-};
+import type { AuthResult, RegisterRequest } from "../api/types";
 
 export default function RegistrationForm() {
 	const { login } = useAuth();
 	const navigate = useNavigate();
 
-	const handleRegistration: SubmitHandler<FormInputs> = async (data) => {
+	const handleRegistration: SubmitHandler<RegisterRequest> = async (data) => {
 		try {
-			const response = await mainApi.post("/auth/register", data);
+			const response = await mainApi.post<AuthResult>("/auth/register", data);
 			login(response.data.token as string);
 			navigate("/dashboard");
 		} catch (error) {
@@ -36,11 +31,11 @@ export default function RegistrationForm() {
 		handleSubmit,
 		setError,
 		formState: { errors },
-	} = useForm<FormInputs>();
+	} = useForm<RegisterRequest>();
 
 	return (
 		<form
-			className="flex flex-col gap-5 xl:border xl:p-20 bg-white justify-center items-center"
+			className="flex flex-col gap-5 xl:border xl:p-20 md:bg-white justify-center items-center"
 			onSubmit={handleSubmit(handleRegistration)}
 		>
 			<NavLink className="flex m-auto hover:opacity-50" to={"/"}>

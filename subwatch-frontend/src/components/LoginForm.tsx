@@ -4,19 +4,15 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../lib/auth-context";
 import { mainApi } from "../lib/axios-instance";
 import axios from "axios";
-
-type FormInputs = {
-	email: string;
-	password: string;
-};
+import type { AuthResult, LoginRequest } from "../api/types";
 
 export default function LoginForm() {
 	const { login } = useAuth();
 	const navigate = useNavigate();
 
-	const handleLogin: SubmitHandler<FormInputs> = async (data) => {
+	const handleLogin: SubmitHandler<LoginRequest> = async (data) => {
 		try {
-			const response = await mainApi.post("/auth/login", data);
+			const response = await mainApi.post<AuthResult>("/auth/login", data);
 			login(response.data.token as string);
 			navigate("/dashboard");
 		} catch (error) {
@@ -35,11 +31,11 @@ export default function LoginForm() {
 		handleSubmit,
 		setError,
 		formState: { errors },
-	} = useForm<FormInputs>();
+	} = useForm<LoginRequest>();
 
 	return (
 		<form
-			className="flex flex-col gap-5 xl:border xl:p-20 bg-white justify-center items-center"
+			className="flex flex-col gap-5 xl:border xl:p-20 md:bg-white justify-center items-center"
 			onSubmit={handleSubmit(handleLogin)}
 		>
 			<NavLink className="flex m-auto hover:opacity-50" to={"/"}>

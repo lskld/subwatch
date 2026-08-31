@@ -16,6 +16,7 @@ import CreateCategoryForm from "../components/CreateCategoryForm";
 import SubscriptionDetailsModal from "../components/SubscriptionDetailsModal";
 import DetailedSubscriptionView from "../components/DetailedSubscriptionView";
 import { toMonthlyPrice } from "../lib/pricing";
+import FilterDropdown from "../components/FilterDropdown";
 
 export default function Dashboard() {
 	const [subscriptions, setSubscriptions] = useState<SubscriptionResponse[]>(
@@ -29,6 +30,8 @@ export default function Dashboard() {
 	>(null);
 
 	const [filterDropdownOpen, setFilterDropdownOpen] = useState(false);
+	const [filterSetting, setFilterSetting] =
+		useState<SubscriptionCategoryResponse | null>(null);
 
 	const [selectedSubscription, setSelectedSubscription] =
 		useState<SubscriptionResponse | null>(null);
@@ -117,8 +120,16 @@ export default function Dashboard() {
 				<FilterButton
 					openFilters={() => setFilterDropdownOpen(!filterDropdownOpen)}
 				/>
-				{filterDropdownOpen && <p>Dropdown</p>}
 			</div>
+			{filterDropdownOpen && (
+				<FilterDropdown
+					categories={categories}
+					onSelect={(category) => {
+						setFilterSetting(category);
+						setFilterDropdownOpen(false);
+					}}
+				/>
+			)}
 			<div className="grid grid-cols-4 text-center text-xs md:text-base mt-10 mb-2">
 				<p>Subscription</p>
 				<p>Interval</p>

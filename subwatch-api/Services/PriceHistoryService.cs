@@ -13,6 +13,12 @@ namespace SubwatchApi.Services
             if (!await dbContext.Subscriptions.AnyAsync(s => s.Id == req.SubscriptionId && s.UserId == userId))
                 throw new UnauthorizedAccessException();
 
+            var currentActivePrice = await dbContext.PriceHistories
+                .FirstOrDefaultAsync(p => p.SubscriptionId == req.SubscriptionId && p.EndDate == null);
+
+            if (currentActivePrice is not null)
+                currentActivePrice.EndDate = req.StartDate;
+
             var priceHistory = new PriceHistory
             {
                 Price = req.Price,

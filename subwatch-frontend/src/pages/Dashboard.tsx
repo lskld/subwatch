@@ -15,6 +15,7 @@ import { getSubscriptionCategories } from "../api/subscription-categories";
 import CreateCategoryForm from "../components/CreateCategoryForm";
 import SubscriptionDetailsModal from "../components/SubscriptionDetailsModal";
 import DetailedSubscriptionView from "../components/DetailedSubscriptionView";
+import { toMonthlyPrice } from "../lib/pricing";
 
 export default function Dashboard() {
 	const [subscriptions, setSubscriptions] = useState<SubscriptionResponse[]>(
@@ -33,7 +34,8 @@ export default function Dashboard() {
 	const [deleteError, setDeleteError] = useState<string | null>(null);
 
 	const totalPrice = subscriptions.reduce(
-		(sum, subscription) => sum + subscription.price,
+		(sum, subscription) =>
+			sum + toMonthlyPrice(subscription.price, subscription.billingInterval),
 		0,
 	);
 

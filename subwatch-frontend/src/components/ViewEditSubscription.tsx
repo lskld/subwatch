@@ -1,11 +1,13 @@
 import { IconTrash, IconUpload } from "@tabler/icons-react";
 import type {
+	CreatePriceHistoryRequest,
 	SubscriptionCategoryResponse,
 	SubscriptionResponse,
 	UpdateSubscriptionRequest,
 } from "../api/types";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { updateSubscription } from "../api/subscriptions";
+import { createPricehistory } from "../api/price-history";
 
 type SubViewProps = {
 	subResponse: SubscriptionResponse;
@@ -41,6 +43,15 @@ export default function ViewEditSubscription({
 		data,
 	) => {
 		const updatedSubscription = await updateSubscription(subResponse.id, data);
+		if (updatedSubscription.price !== subResponse.price) {
+			const priceHistory: CreatePriceHistoryRequest = {
+				price: updatedSubscription.price,
+				startDate: new Date().toISOString(),
+				endDate: null,
+				subscriptionId: updatedSubscription.id,
+			};
+			await createPricehistory(priceHistory);
+		}
 		onUpdate(updatedSubscription);
 	};
 

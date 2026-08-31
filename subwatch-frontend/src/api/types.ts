@@ -1,7 +1,9 @@
 import type { components } from "./generated-types";
 
-export type CreatePriceHistoryRequest =
-	components["schemas"]["CreatePriceHistoryRequest"];
+export type CreatePriceHistoryRequest = Omit<
+	components["schemas"]["CreatePriceHistoryRequest"],
+	"price"
+> & { price: number };
 export type CreateSubscriptionCategoryRequest =
 	components["schemas"]["CreateSubscriptionCategoryRequest"];
 export type CreateSubscriptionRequest = Omit<
@@ -14,8 +16,10 @@ export type UpdatePriceHistoryRequest =
 	components["schemas"]["UpdatePriceHistoryRequest"];
 export type UpdateSubscriptionCategoryRequest =
 	components["schemas"]["UpdateSubscriptionCategoryRequest"];
-export type UpdateSubscriptionRequest =
-	components["schemas"]["UpdateSubscriptionRequest"];
+export type UpdateSubscriptionRequest = Omit<
+	components["schemas"]["UpdateSubscriptionRequest"],
+	"billingInterval"
+> & { billingInterval: string };
 export type AuthResult = components["schemas"]["AuthResult"];
 export type UserResponse = components["schemas"]["UserResponse"];
 export type PriceHistoryResponse =

@@ -1,5 +1,9 @@
 import { mainApi } from "../lib/axios-instance";
-import type { CreateSubscriptionRequest, SubscriptionResponse } from "./types";
+import type {
+	CreateSubscriptionRequest,
+	SubscriptionResponse,
+	UpdateSubscriptionRequest,
+} from "./types";
 
 export async function getSubscriptions() {
 	const response = await mainApi.get<SubscriptionResponse[]>("/subscriptions");
@@ -38,4 +42,15 @@ export async function createSubscription({
 
 export async function deleteSubscription(id: number) {
 	await mainApi.delete(`/subscriptions/${id}`);
+}
+
+export async function updateSubscription(
+	id: number,
+	updateReq: UpdateSubscriptionRequest,
+) {
+	const response = await mainApi.put<SubscriptionResponse>(
+		`/subscriptions/${id}`,
+		updateReq,
+	);
+	return response.data;
 }

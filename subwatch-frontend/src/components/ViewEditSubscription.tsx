@@ -196,9 +196,7 @@ export default function ViewEditSubscription({
 			</form>
 			{deleteError && <p>{deleteError}</p>}
 			<h2 className="self-center">Price History:</h2>
-			<div>
-				<PriceHistoryChart priceHistories={priceHistories} />
-			</div>
+			<PriceHistoryChart priceHistories={priceHistories} />
 		</div>
 	);
 }

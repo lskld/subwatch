@@ -28,6 +28,8 @@ export default function Dashboard() {
 		"subscription" | "category" | null
 	>(null);
 
+	const [filterDropdownOpen, setFilterDropdownOpen] = useState(false);
+
 	const [selectedSubscription, setSelectedSubscription] =
 		useState<SubscriptionResponse | null>(null);
 
@@ -112,7 +114,10 @@ export default function Dashboard() {
 						)}
 					</CreateSubscriptionModal>
 				)}
-				<FilterButton />
+				<FilterButton
+					openFilters={() => setFilterDropdownOpen(!filterDropdownOpen)}
+				/>
+				{filterDropdownOpen && <p>Dropdown</p>}
 			</div>
 			<div className="grid grid-cols-4 text-center text-xs md:text-base mt-10 mb-2">
 				<p>Subscription</p>

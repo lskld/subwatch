@@ -1,5 +1,6 @@
 import { IconTrash, IconUpload } from "@tabler/icons-react";
 import type {
+	PriceHistoryResponse,
 	CreatePriceHistoryRequest,
 	SubscriptionCategoryResponse,
 	SubscriptionResponse,
@@ -7,7 +8,12 @@ import type {
 } from "../api/types";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { updateSubscription } from "../api/subscriptions";
-import { createPricehistory } from "../api/price-history";
+import {
+	createPricehistory,
+	getPriceHistoriesBySubscription,
+} from "../api/price-history";
+import PriceHistoryChart from "./PriceHistoryChart";
+import { useEffect, useState } from "react";
 
 type SubViewProps = {
 	subResponse: SubscriptionResponse;
@@ -54,6 +60,18 @@ export default function ViewEditSubscription({
 		}
 		onUpdate(updatedSubscription);
 	};
+
+	const [priceHistories, setPriceHistories] = useState<PriceHistoryResponse[]>(
+		[],
+	);
+
+	useEffect(() => {
+		async function getPricehistories(subscriptionId: number) {
+			const response = await getPriceHistoriesBySubscription(subscriptionId);
+			setPriceHistories(response);
+		}
+		getPricehistories(subResponse.id);
+	}, [subResponse.id]);
 
 	return (
 		<div className="flex flex-col justify-center gap-5 p-6">
@@ -174,6 +192,9 @@ export default function ViewEditSubscription({
 				</div>
 			</form>
 			{deleteError && <p>{deleteError}</p>}
+
+			<h2 className="self-center">Price History:</h2>
+			<PriceHistoryChart priceHistories={priceHistories} />
 		</div>
 	);
 }

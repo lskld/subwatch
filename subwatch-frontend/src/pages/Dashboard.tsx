@@ -26,6 +26,7 @@ export default function Dashboard() {
 	const [categories, setCategories] = useState<SubscriptionCategoryResponse[]>(
 		[],
 	);
+
 	const [subModalView, setSubModalView] = useState<
 		"subscription" | "category" | null
 	>(null);

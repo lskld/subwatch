@@ -29,7 +29,7 @@ export default function SubscriptionCard({
 				<p>{billingDate.toString()}</p>
 			</div>
 			<div className="flex items-center justify-center w-1/4 h-8 xl:h-12 bg-primary">
-				<p>{price}</p>
+				<p>{price} kr</p>
 			</div>
 		</button>
 	);

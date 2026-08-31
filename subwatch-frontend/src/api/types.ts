@@ -14,8 +14,10 @@ export type UpdatePriceHistoryRequest =
 	components["schemas"]["UpdatePriceHistoryRequest"];
 export type UpdateSubscriptionCategoryRequest =
 	components["schemas"]["UpdateSubscriptionCategoryRequest"];
-export type UpdateSubscriptionRequest =
-	components["schemas"]["UpdateSubscriptionRequest"];
+export type UpdateSubscriptionRequest = Omit<
+	components["schemas"]["UpdateSubscriptionRequest"],
+	"billingInterval"
+> & { billingInterval: string };
 export type AuthResult = components["schemas"]["AuthResult"];
 export type UserResponse = components["schemas"]["UserResponse"];
 export type PriceHistoryResponse =

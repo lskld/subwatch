@@ -13,6 +13,7 @@ import CreateSubscriptionModal from "../components/CreateSubscriptionModal";
 import CreateSubscriptionForm from "../components/CreateSubscriptionForm";
 import { getSubscriptionCategories } from "../api/subscription-categories";
 import CreateCategoryForm from "../components/CreateCategoryForm";
+import SubscriptionDetailsModal from "../components/SubscriptionDetailsModal";
 
 export default function Dashboard() {
 	const [subscriptions, setSubscriptions] = useState<SubscriptionResponse[]>(
@@ -24,6 +25,8 @@ export default function Dashboard() {
 	const [subModalView, setSubModalView] = useState<
 		"subscription" | "category" | null
 	>(null);
+
+	const [detailsModalOpen, setDetailsModalOpen] = useState(false);
 
 	const totalPrice = subscriptions.reduce(
 		(sum, subscription) => sum + subscription.price,
@@ -102,6 +105,7 @@ export default function Dashboard() {
 					billingInterval={subscription.billingInterval}
 					billingDate={subscription.nextBillingDate.split("T")[0]}
 					price={subscription.price}
+					onClick={() => setDetailsModalOpen(true)}
 				/>
 			))}
 			{subscriptions.length > 0 ? (
@@ -111,6 +115,11 @@ export default function Dashboard() {
 				</div>
 			) : (
 				<p className="mt-10 text-center">No subscriptions yet</p>
+			)}
+			{detailsModalOpen && (
+				<SubscriptionDetailsModal onClose={() => setDetailsModalOpen(false)}>
+					Children
+				</SubscriptionDetailsModal>
 			)}
 		</section>
 	);

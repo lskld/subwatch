@@ -22,6 +22,7 @@ export default function Dashboard() {
 	const [subscriptions, setSubscriptions] = useState<SubscriptionResponse[]>(
 		[],
 	);
+
 	const [categories, setCategories] = useState<SubscriptionCategoryResponse[]>(
 		[],
 	);
@@ -32,13 +33,18 @@ export default function Dashboard() {
 	const [filterDropdownOpen, setFilterDropdownOpen] = useState(false);
 	const [filterSetting, setFilterSetting] =
 		useState<SubscriptionCategoryResponse | null>(null);
+	const filteredSubscriptions = subscriptions.filter(
+		(subscription) =>
+			!filterSetting ||
+			subscription.subscriptionCategoryResponse.id === filterSetting.id,
+	);
 
 	const [selectedSubscription, setSelectedSubscription] =
 		useState<SubscriptionResponse | null>(null);
 
 	const [deleteError, setDeleteError] = useState<string | null>(null);
 
-	const totalPrice = subscriptions.reduce(
+	const totalPrice = filteredSubscriptions.reduce(
 		(sum, subscription) =>
 			sum + toMonthlyPrice(subscription.price, subscription.billingInterval),
 		0,
@@ -136,7 +142,7 @@ export default function Dashboard() {
 				<p>Billing Date</p>
 				<p>Price</p>
 			</div>
-			{subscriptions.map((subscription) => (
+			{filteredSubscriptions.map((subscription) => (
 				<SubscriptionCard
 					key={subscription.id}
 					name={subscription.title}
@@ -148,7 +154,7 @@ export default function Dashboard() {
 			))}
 			{subscriptions.length > 0 ? (
 				<div className="flex justify-between text-sm xl:text-base">
-					<p>Subscriptions: {subscriptions.length}</p>
+					<p>Subscriptions: {filteredSubscriptions.length}</p>
 					<p>Monthly Total: {totalPrice} kr</p>
 				</div>
 			) : (

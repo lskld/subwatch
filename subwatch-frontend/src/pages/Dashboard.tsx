@@ -3,7 +3,7 @@ import CreateSubscriptionButton from "../components/CreateSubscriptionButton";
 import FilterButton from "../components/FilterButton";
 import LogoutButton from "../components/LogoutButton";
 import SubscriptionCard from "../components/SubscriptionCard";
-import { getSubscriptions } from "../api/subscriptions";
+import { deleteSubscription, getSubscriptions } from "../api/subscriptions";
 import { useEffect, useState } from "react";
 import type {
 	SubscriptionCategoryResponse,
@@ -30,6 +30,8 @@ export default function Dashboard() {
 	const [selectedSubscription, setSelectedSubscription] =
 		useState<SubscriptionResponse | null>(null);
 
+	const [deleteError, setDeleteError] = useState<string | null>(null);
+
 	const totalPrice = subscriptions.reduce(
 		(sum, subscription) => sum + subscription.price,
 		0,
@@ -50,6 +52,22 @@ export default function Dashboard() {
 		}
 		loadCategories();
 	}, []);
+
+	const handleDelete = async (id: number) => {
+		if (!window.confirm("Are you sure you want to delete this subscription?")) {
+			return;
+		}
+		try {
+			await deleteSubscription(id);
+			setSubscriptions((prev) =>
+				prev.filter((subscription) => subscription.id !== id),
+			);
+			setSelectedSubscription(null);
+		} catch (error) {
+			setDeleteError("Something went wrong");
+			console.log(error);
+		}
+	};
 
 	return (
 		<section className="w-full xl:w-[70%] mx-auto flex flex-col flex-1 min-h-svh bg-white px-2 xl:px-20">
@@ -121,15 +139,9 @@ export default function Dashboard() {
 			{selectedSubscription && (
 				<SubscriptionDetailsModal onClose={() => setSelectedSubscription(null)}>
 					<DetailedSubscriptionView
-						id={selectedSubscription.id}
-						title={selectedSubscription.title}
-						description={selectedSubscription.description}
-						price={selectedSubscription.price}
-						billingInterval={selectedSubscription.billingInterval}
-						nextBillingDate={selectedSubscription.nextBillingDate}
-						subscriptionCategoryResponse={
-							selectedSubscription.subscriptionCategoryResponse
-						}
+						subResponse={selectedSubscription}
+						onDelete={() => handleDelete(selectedSubscription.id)}
+						deleteError={deleteError}
 					/>
 				</SubscriptionDetailsModal>
 			)}

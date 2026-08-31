@@ -35,7 +35,7 @@ export default function LoginForm() {
 
 	return (
 		<form
-			className="flex flex-col gap-5 xl:border xl:p-20 md:bg-white justify-center items-center"
+			className="flex flex-col gap-5 md:border md:p-20 md:bg-white justify-center items-center"
 			onSubmit={handleSubmit(handleLogin)}
 		>
 			<NavLink className="flex m-auto hover:opacity-50" to={"/"}>

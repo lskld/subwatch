@@ -3,6 +3,7 @@ type SubscriptionCardProps = {
 	billingInterval: string;
 	billingDate: string;
 	price: number;
+	onClick: () => void;
 };
 
 export default function SubscriptionCard({
@@ -10,9 +11,14 @@ export default function SubscriptionCard({
 	billingInterval,
 	billingDate,
 	price,
+	onClick,
 }: SubscriptionCardProps) {
 	return (
-		<button className="flex mb-2 text-xs md:text-base hover:opacity-75 cursor-pointer">
+		<button
+			type="button"
+			onClick={onClick}
+			className="flex mb-2 text-xs md:text-base hover:opacity-75 cursor-pointer"
+		>
 			<div className="flex items-center justify-center w-1/4 h-8 xl:h-12 bg-primary-blue">
 				<p>{name}</p>
 			</div>

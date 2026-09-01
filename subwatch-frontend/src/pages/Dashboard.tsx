@@ -124,19 +124,21 @@ export default function Dashboard() {
 						)}
 					</CreateSubscriptionModal>
 				)}
-				<FilterButton
-					openFilters={() => setFilterDropdownOpen(!filterDropdownOpen)}
-				/>
+				<div className="relative">
+					<FilterButton
+						openFilters={() => setFilterDropdownOpen(!filterDropdownOpen)}
+					/>
+					{filterDropdownOpen && (
+						<FilterDropdown
+							categories={categories}
+							onSelect={(category) => {
+								setFilterSetting(category);
+								setFilterDropdownOpen(false);
+							}}
+						/>
+					)}
+				</div>
 			</div>
-			{filterDropdownOpen && (
-				<FilterDropdown
-					categories={categories}
-					onSelect={(category) => {
-						setFilterSetting(category);
-						setFilterDropdownOpen(false);
-					}}
-				/>
-			)}
 			<div className="grid grid-cols-4 text-center text-xs md:text-base mt-10 mb-2">
 				<p>Subscription</p>
 				<p>Interval</p>

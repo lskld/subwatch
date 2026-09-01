@@ -48,6 +48,9 @@ export default function ViewEditSubscription({
 	const handleUpdate: SubmitHandler<UpdateSubscriptionRequest> = async (
 		data,
 	) => {
+		if (!window.confirm("Are you sure you want to update this subscription?")) {
+			return;
+		}
 		const updatedSubscription = await updateSubscription(subResponse.id, data);
 		if (updatedSubscription.price !== subResponse.price) {
 			const priceHistory: CreatePriceHistoryRequest = {
@@ -74,7 +77,7 @@ export default function ViewEditSubscription({
 	}, [subResponse.id]);
 
 	return (
-		<div className="flex flex-col justify-center gap-5 p-6">
+		<div className="flex flex-col gap-5 p-6">
 			<form
 				className="flex flex-col gap-2 p-3 md:p-10"
 				onSubmit={handleSubmit(handleUpdate)}
@@ -192,7 +195,6 @@ export default function ViewEditSubscription({
 				</div>
 			</form>
 			{deleteError && <p>{deleteError}</p>}
-
 			<h2 className="self-center">Price History:</h2>
 			<PriceHistoryChart priceHistories={priceHistories} />
 		</div>

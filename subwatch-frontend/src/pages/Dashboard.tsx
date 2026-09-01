@@ -124,19 +124,21 @@ export default function Dashboard() {
 						)}
 					</CreateSubscriptionModal>
 				)}
-				<FilterButton
-					openFilters={() => setFilterDropdownOpen(!filterDropdownOpen)}
-				/>
+				<div className="relative">
+					<FilterButton
+						openFilters={() => setFilterDropdownOpen(!filterDropdownOpen)}
+					/>
+					{filterDropdownOpen && (
+						<FilterDropdown
+							categories={categories}
+							onSelect={(category) => {
+								setFilterSetting(category);
+								setFilterDropdownOpen(false);
+							}}
+						/>
+					)}
+				</div>
 			</div>
-			{filterDropdownOpen && (
-				<FilterDropdown
-					categories={categories}
-					onSelect={(category) => {
-						setFilterSetting(category);
-						setFilterDropdownOpen(false);
-					}}
-				/>
-			)}
 			<div className="grid grid-cols-4 text-center text-xs md:text-base mt-10 mb-2">
 				<p>Subscription</p>
 				<p>Interval</p>
@@ -156,7 +158,7 @@ export default function Dashboard() {
 			{filteredSubscriptions.length > 0 ? (
 				<div className="flex justify-between text-sm xl:text-base">
 					<p>Subscriptions: {filteredSubscriptions.length}</p>
-					<p>Monthly Total: {totalPrice} kr</p>
+					<p>Monthly Total: {totalPrice.toFixed(2)} kr</p>
 				</div>
 			) : (
 				<p className="mt-10 text-center">No subscriptions yet</p>

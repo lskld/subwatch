@@ -13,3 +13,14 @@ mainApi.interceptors.request.use((config) => {
 
 	return config;
 });
+
+mainApi.interceptors.response.use(
+	(response) => response,
+	(error) => {
+		if (axios.isAxiosError(error) && error.response?.status === 401) {
+			localStorage.removeItem("jwt_token");
+			window.location.href = "/login";
+		}
+		return Promise.reject(error);
+	},
+);

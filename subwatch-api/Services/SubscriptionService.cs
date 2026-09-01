@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using SubwatchApi.Data;
 using SubwatchApi.Models.DTOs;
 using SubwatchApi.Models.Entities;
+using SubwatchApi.Models.Enums;
 
 namespace SubwatchApi.Services
 {
@@ -53,27 +54,48 @@ namespace SubwatchApi.Services
         }
         public async Task<SubscriptionResponse?> GetByIdAsync(int id, string userId)
         {
-            return await dbContext.Subscriptions
-                .Where(s => s.Id == id && s.UserId == userId)
-                .Select(s => new SubscriptionResponse(
-                    s.Id,
-                    s.Title,
-                    s.Description,
-                    s.Price,
-                    s.BillingInterval,
-                    s.NextBillingDate,
-                    new SubscriptionCategoryResponse(
-                        s.SubscriptionCategory.Id,
-                        s.SubscriptionCategory.Title,
-                        s.SubscriptionCategory.Description
-                    )
-                )).FirstOrDefaultAsync();
+            var subscription = await dbContext.Subscriptions
+                .Include(s => s.SubscriptionCategory)
+                .FirstOrDefaultAsync(s => s.Id == id && s.UserId == userId);
+
+            if (subscription is null)
+                return null;
+
+            if (AdvanceIfOverdue(subscription))
+                await dbContext.SaveChangesAsync();
+
+            return new SubscriptionResponse(
+                subscription.Id,
+                subscription.Title,
+                subscription.Description,
+                subscription.Price,
+                subscription.BillingInterval,
+                subscription.NextBillingDate,
+                new SubscriptionCategoryResponse(
+                    subscription.SubscriptionCategory.Id,
+                    subscription.SubscriptionCategory.Title,
+                    subscription.SubscriptionCategory.Description
+                )
+            );
         }
         public async Task<List<SubscriptionResponse>> GetAllAsync(string userId)
         {
-            return await dbContext.Subscriptions
+            var subscriptions = await dbContext.Subscriptions
+                .Include(s => s.SubscriptionCategory)
                 .Where(s => s.UserId == userId)
-                .Select(s => new SubscriptionResponse(
+                .ToListAsync();
+
+            var anyUpdated = false;
+            foreach (var subscription in subscriptions)
+            {
+                if (AdvanceIfOverdue(subscription))
+                    anyUpdated = true;
+            }
+
+            if (anyUpdated)
+                await dbContext.SaveChangesAsync();
+
+            return subscriptions.Select(s => new SubscriptionResponse(
                     s.Id,
                     s.Title,
                     s.Description,
@@ -84,8 +106,7 @@ namespace SubwatchApi.Services
                         s.SubscriptionCategory.Id,
                         s.SubscriptionCategory.Title,
                         s.SubscriptionCategory.Description
-                    )
-                )).ToListAsync();
+                    ))).ToList();
         }
 
         public async Task<SubscriptionResponse?> UpdateAsync(int id, UpdateSubscriptionRequest req, string userId)
@@ -134,6 +155,25 @@ namespace SubwatchApi.Services
             dbContext.Subscriptions.Remove(subscription);
             await dbContext.SaveChangesAsync();
             return true;
+        }
+
+        private static bool AdvanceIfOverdue(Subscription subscription)
+        {
+            var advanced = false;
+            while (subscription.NextBillingDate <= DateTime.UtcNow)
+            {
+                subscription.NextBillingDate = subscription.BillingInterval switch
+                {
+                    BillingInterval.Weekly => subscription.NextBillingDate.AddDays(7),
+                    BillingInterval.BiWeekly => subscription.NextBillingDate.AddDays(14),
+                    BillingInterval.Monthly => subscription.NextBillingDate.AddMonths(1),
+                    BillingInterval.Quarterly => subscription.NextBillingDate.AddMonths(3),
+                    BillingInterval.Yearly => subscription.NextBillingDate.AddYears(1),
+                    _ => subscription.NextBillingDate
+                };
+                advanced = true;
+            }
+            return advanced;
         }
     }
 }

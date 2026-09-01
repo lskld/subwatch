@@ -156,7 +156,7 @@ export default function Dashboard() {
 			{filteredSubscriptions.length > 0 ? (
 				<div className="flex justify-between text-sm xl:text-base">
 					<p>Subscriptions: {filteredSubscriptions.length}</p>
-					<p>Monthly Total: {totalPrice} kr</p>
+					<p>Monthly Total: {totalPrice.toFixed(2)} kr</p>
 				</div>
 			) : (
 				<p className="mt-10 text-center">No subscriptions yet</p>

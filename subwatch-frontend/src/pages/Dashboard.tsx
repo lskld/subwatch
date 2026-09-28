@@ -18,6 +18,13 @@ import { toMonthlyPrice } from "../lib/pricing";
 import FilterDropdown from "../components/FilterDropdown";
 import ViewEditSubscription from "../components/ViewEditSubscription";
 
+const intervalOrder: Record<string, number> = {
+	DAILY: 1,
+	WEEKLY: 2,
+	MONTHLY: 3,
+	YEARLY: 4,
+};
+
 export default function Dashboard() {
 	const [subscriptions, setSubscriptions] = useState<SubscriptionResponse[]>(
 		[],
@@ -39,6 +46,42 @@ export default function Dashboard() {
 			!filterSetting ||
 			subscription.subscriptionCategoryResponse.id === filterSetting.id,
 	);
+
+	const [sortConfig, setSortConfig] = useState<{
+		key: keyof SubscriptionResponse | null;
+		direction: "asc" | "desc";
+	}>({ key: null, direction: "asc" });
+
+	const sortedSubscriptions = [...filteredSubscriptions].sort((a, b) => {
+		if (!sortConfig.key) return 0;
+		let comparison = 0;
+		switch (sortConfig.key) {
+			case "title":
+				comparison = a.title.localeCompare(b.title);
+				break;
+			case "billingInterval":
+				comparison =
+					(intervalOrder[a.billingInterval] || 0) -
+					(intervalOrder[b.billingInterval] || 0);
+				break;
+			case "nextBillingDate":
+				comparison =
+					new Date(a.nextBillingDate).getTime() -
+					new Date(b.nextBillingDate).getTime();
+				break;
+			case "price":
+				comparison = a.price - b.price;
+				break;
+		}
+		return sortConfig.direction === "asc" ? comparison : -comparison;
+	});
+
+	const requestSort = (key: keyof SubscriptionResponse) => {
+		setSortConfig((prev) => ({
+			key,
+			direction: prev.key === key && prev.direction === "asc" ? "desc" : "asc",
+		}));
+	};
 
 	const [selectedSubscription, setSelectedSubscription] =
 		useState<SubscriptionResponse | null>(null);
@@ -141,12 +184,40 @@ export default function Dashboard() {
 				</div>
 			</div>
 			<div className="grid grid-cols-4 text-center text-xs md:text-base mt-10 mb-2">
-				<p>Subscription</p>
-				<p>Interval</p>
-				<p>Billing Date</p>
-				<p>Price</p>
+				<button
+					onClick={() => requestSort("title")}
+					className="hover:opacity-75"
+				>
+					Subscription{" "}
+					{sortConfig.key === "title" &&
+						(sortConfig.direction === "asc" ? "↑" : "↓")}
+				</button>
+				<button
+					onClick={() => requestSort("billingInterval")}
+					className="hover:opacity-75"
+				>
+					Interval{" "}
+					{sortConfig.key === "billingInterval" &&
+						(sortConfig.direction === "asc" ? "↑" : "↓")}
+				</button>
+				<button
+					onClick={() => requestSort("nextBillingDate")}
+					className="hover:opacity-75"
+				>
+					Billing Date{" "}
+					{sortConfig.key === "nextBillingDate" &&
+						(sortConfig.direction === "asc" ? "↑" : "↓")}
+				</button>
+				<button
+					onClick={() => requestSort("price")}
+					className="hover:opacity-75"
+				>
+					Price{" "}
+					{sortConfig.key === "price" &&
+						(sortConfig.direction === "asc" ? "↑" : "↓")}
+				</button>
 			</div>
-			{filteredSubscriptions.map((subscription) => (
+			{sortedSubscriptions.map((subscription) => (
 				<SubscriptionCard
 					key={subscription.id}
 					name={subscription.title}

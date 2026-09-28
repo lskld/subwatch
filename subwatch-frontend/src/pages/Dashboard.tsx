@@ -19,10 +19,11 @@ import FilterDropdown from "../components/FilterDropdown";
 import ViewEditSubscription from "../components/ViewEditSubscription";
 
 const intervalOrder: Record<string, number> = {
-	DAILY: 1,
-	WEEKLY: 2,
-	MONTHLY: 3,
-	YEARLY: 4,
+	Weekly: 1,
+	BiWeekly: 2,
+	Monthly: 3,
+	Quarterly: 4,
+	Yearly: 5,
 };
 
 export default function Dashboard() {

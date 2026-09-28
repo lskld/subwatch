@@ -1,4 +1,5 @@
-# Subwatch - subscription tracker
+<img width="642" height="171" alt="bild" src="https://github.com/user-attachments/assets/bba209a0-89a3-4dd6-a11b-503e57cffc4c" />
+
 
 Subwatch is a subscription tracker. You register an account, add the subscriptions you pay for, organise them into your own categories, and the dashboard shows what they add up to per month. Every price change is kept as price history, so each subscription has a chart of what it has cost you over time.
 

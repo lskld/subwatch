@@ -18,6 +18,14 @@ import { toMonthlyPrice } from "../lib/pricing";
 import FilterDropdown from "../components/FilterDropdown";
 import ViewEditSubscription from "../components/ViewEditSubscription";
 
+const intervalOrder: Record<string, number> = {
+	Weekly: 1,
+	BiWeekly: 2,
+	Monthly: 3,
+	Quarterly: 4,
+	Yearly: 5,
+};
+
 export default function Dashboard() {
 	const [subscriptions, setSubscriptions] = useState<SubscriptionResponse[]>(
 		[],
@@ -40,16 +48,57 @@ export default function Dashboard() {
 			subscription.subscriptionCategoryResponse.id === filterSetting.id,
 	);
 
+	const [sortConfig, setSortConfig] = useState<{
+		key: keyof SubscriptionResponse | null;
+		direction: "asc" | "desc";
+	}>({ key: null, direction: "asc" });
+
+	const sortedSubscriptions = [...filteredSubscriptions].sort((a, b) => {
+		if (!sortConfig.key) return 0;
+		let comparison = 0;
+		switch (sortConfig.key) {
+			case "title":
+				comparison = a.title.localeCompare(b.title);
+				break;
+			case "billingInterval":
+				comparison =
+					(intervalOrder[a.billingInterval] || 0) -
+					(intervalOrder[b.billingInterval] || 0);
+				break;
+			case "nextBillingDate":
+				comparison =
+					new Date(a.nextBillingDate).getTime() -
+					new Date(b.nextBillingDate).getTime();
+				break;
+			case "price":
+				comparison = a.price - b.price;
+				break;
+		}
+		return sortConfig.direction === "asc" ? comparison : -comparison;
+	});
+
+	const requestSort = (key: keyof SubscriptionResponse) => {
+		setSortConfig((prev) => ({
+			key,
+			direction: prev.key === key && prev.direction === "asc" ? "desc" : "asc",
+		}));
+	};
+
 	const [selectedSubscription, setSelectedSubscription] =
 		useState<SubscriptionResponse | null>(null);
 
 	const [deleteError, setDeleteError] = useState<string | null>(null);
 
-	const totalPrice = filteredSubscriptions.reduce(
+	const totalPrice = sortedSubscriptions.reduce(
 		(sum, subscription) =>
 			sum + toMonthlyPrice(subscription.price, subscription.billingInterval),
 		0,
 	);
+
+	const getSortIndicator = (column: keyof SubscriptionResponse) => {
+		if (sortConfig.key !== column) return null;
+		return sortConfig.direction === "asc" ? "↑" : "↓";
+	};
 
 	useEffect(() => {
 		async function loadSubscriptions() {
@@ -141,12 +190,32 @@ export default function Dashboard() {
 				</div>
 			</div>
 			<div className="grid grid-cols-4 text-center text-xs md:text-base mt-10 mb-2">
-				<p>Subscription</p>
-				<p>Interval</p>
-				<p>Billing Date</p>
-				<p>Price</p>
+				<button
+					onClick={() => requestSort("title")}
+					className="hover:opacity-75"
+				>
+					Subscription {getSortIndicator("title")}
+				</button>
+				<button
+					onClick={() => requestSort("billingInterval")}
+					className="hover:opacity-75"
+				>
+					Interval {getSortIndicator("billingInterval")}
+				</button>
+				<button
+					onClick={() => requestSort("nextBillingDate")}
+					className="hover:opacity-75"
+				>
+					Billing Date {getSortIndicator("nextBillingDate")}
+				</button>
+				<button
+					onClick={() => requestSort("price")}
+					className="hover:opacity-75"
+				>
+					Price {getSortIndicator("price")}
+				</button>
 			</div>
-			{filteredSubscriptions.map((subscription) => (
+			{sortedSubscriptions.map((subscription) => (
 				<SubscriptionCard
 					key={subscription.id}
 					name={subscription.title}
@@ -156,9 +225,9 @@ export default function Dashboard() {
 					onClick={() => setSelectedSubscription(subscription)}
 				/>
 			))}
-			{filteredSubscriptions.length > 0 ? (
+			{sortedSubscriptions.length > 0 ? (
 				<div className="flex justify-between text-sm xl:text-base">
-					<p>Subscriptions: {filteredSubscriptions.length}</p>
+					<p>Subscriptions: {sortedSubscriptions.length}</p>
 					<p>Monthly Total: {totalPrice.toFixed(2)} kr</p>
 				</div>
 			) : (

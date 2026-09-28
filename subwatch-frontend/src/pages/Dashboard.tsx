@@ -89,7 +89,7 @@ export default function Dashboard() {
 
 	const [deleteError, setDeleteError] = useState<string | null>(null);
 
-	const totalPrice = filteredSubscriptions.reduce(
+	const totalPrice = sortedSubscriptions.reduce(
 		(sum, subscription) =>
 			sum + toMonthlyPrice(subscription.price, subscription.billingInterval),
 		0,
@@ -228,9 +228,9 @@ export default function Dashboard() {
 					onClick={() => setSelectedSubscription(subscription)}
 				/>
 			))}
-			{filteredSubscriptions.length > 0 ? (
+			{sortedSubscriptions.length > 0 ? (
 				<div className="flex justify-between text-sm xl:text-base">
-					<p>Subscriptions: {filteredSubscriptions.length}</p>
+					<p>Subscriptions: {sortedSubscriptions.length}</p>
 					<p>Monthly Total: {totalPrice.toFixed(2)} kr</p>
 				</div>
 			) : (

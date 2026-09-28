@@ -95,6 +95,11 @@ export default function Dashboard() {
 		0,
 	);
 
+	const getSortIndicator = (column: keyof SubscriptionResponse) => {
+		if (sortConfig.key !== column) return null;
+		return sortConfig.direction === "asc" ? "↑" : "↓";
+	};
+
 	useEffect(() => {
 		async function loadSubscriptions() {
 			const data = await getSubscriptions();
@@ -189,33 +194,25 @@ export default function Dashboard() {
 					onClick={() => requestSort("title")}
 					className="hover:opacity-75"
 				>
-					Subscription{" "}
-					{sortConfig.key === "title" &&
-						(sortConfig.direction === "asc" ? "↑" : "↓")}
+					Subscription {getSortIndicator("title")}
 				</button>
 				<button
 					onClick={() => requestSort("billingInterval")}
 					className="hover:opacity-75"
 				>
-					Interval{" "}
-					{sortConfig.key === "billingInterval" &&
-						(sortConfig.direction === "asc" ? "↑" : "↓")}
+					Interval {getSortIndicator("billingInterval")}
 				</button>
 				<button
 					onClick={() => requestSort("nextBillingDate")}
 					className="hover:opacity-75"
 				>
-					Billing Date{" "}
-					{sortConfig.key === "nextBillingDate" &&
-						(sortConfig.direction === "asc" ? "↑" : "↓")}
+					Billing Date {getSortIndicator("nextBillingDate")}
 				</button>
 				<button
 					onClick={() => requestSort("price")}
 					className="hover:opacity-75"
 				>
-					Price{" "}
-					{sortConfig.key === "price" &&
-						(sortConfig.direction === "asc" ? "↑" : "↓")}
+					Price {getSortIndicator("price")}
 				</button>
 			</div>
 			{sortedSubscriptions.map((subscription) => (
